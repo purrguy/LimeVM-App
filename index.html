@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LimeVM — a custom register-VM obfuscator for Lua and Luau. Fresh-shuffled ISA, encrypted constants and a flat dispatcher in every build.">
+<title>LimeVM — Lua obfuscator with bite</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="nav">
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <span class="acct" id="acct-area"><button type="button" class="btn small" id="acct-btn">Log in</button></span>
+  <a class="btn discord" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Join Discord</a>
+</header>
+
+<section class="hero">
+  <div class="hero-lime" aria-hidden="true">
+    <div class="slice"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <h1>Squeeze your Lua <span class="hl">dry.</span></h1>
+  <p class="sub">LimeVM is a custom register-VM obfuscator for Lua &amp; Luau.
+     Every build gets a fresh-shuffled ISA, encrypted constants and a flat
+     dispatcher — no two outputs look alike.</p>
+  <div class="cta-row">
+    <a class="btn big" href="#/download">Get LimeVM</a>
+    <a class="btn ghost" href="#/demo">Try it free</a>
+  </div>
+  <div class="badges">
+    <span>21/21 differential tests</span>
+    <span>per-build metamorphic VM</span>
+    <span>140+ real scripts verified</span>
+  </div>
+</section>
+
+<div class="marquee"><div class="track">
+  <span>fresh opcode map every build • </span><span>encrypted constants • </span><span>flat dispatcher • </span><span>anti-AI shield • </span><span>integrity tripwires • </span><span>no plaintext leftovers • </span>
+  <span>fresh opcode map every build • </span><span>encrypted constants • </span><span>flat dispatcher • </span><span>anti-AI shield • </span><span>integrity tripwires • </span><span>no plaintext leftovers • </span>
+</div></div>
+
+<nav class="tabs" id="tabs">
+  <a href="#/features" data-tab="features">Features</a>
+  <a href="#/demo" data-tab="demo">Live demo</a>
+  <a href="#/download" data-tab="download">Download</a>
+  <a href="#/pricing" data-tab="pricing">Pricing</a>
+  <a href="#/faq" data-tab="faq">FAQ</a>
+</nav>
+
+<main id="panels">
+<section class="panel" data-panel="features">
+  <h2>Why it's sour for reversers</h2>
+  <div class="cards">
+    <div class="card"><div class="emoji">🎲</div><h3>Metamorphic VM</h3><p>Opcode numbers, operand biases, handler spellings and dispatcher shape are re-rolled from your seed. Signature tools starve.</p></div>
+    <div class="card"><div class="emoji">🔒</div><h3>Encrypted everything</h3><p>Strings, numbers and globals live as rotate+xor ciphertext, split into chunks. The decoder key stream never repeats.</p></div>
+    <div class="card"><div class="emoji">🪤</div><h3>Integrity tripwires</h3><p>Every proto carries a checksum. Patch one byte and the program silently computes garbage instead of crashing loudly.</p></div>
+    <div class="card"><div class="emoji">🤖</div><h3>Anti-AI shield</h3><p>Decoy banners plus encrypted dead protos. Scrapers and lifters trip over bait before they reach your logic.</p></div>
+  </div>
+  <h2 class="gap">From this… to this</h2>
+  <div class="code-grid">
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>script.lua</span></div><pre id="code-in"></pre></div>
+    <div class="arrow">→</div>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>script.obfuscated.lua</span></div><pre id="code-out"></pre></div>
+  </div>
+</section>
+
+<section class="panel" data-panel="demo" hidden>
+  <h2>The real thing, right here</h2>
+  <p class="center dim" id="demo-sub">Log in (free account) and squeeze up to 3 mini-scripts a day (150 chars each) — the actual engine, not a mockup. Paid tiers get 20. Need full size? Grab the app.</p>
+  <div class="demo-box">
+    <textarea id="demo-in" spellcheck="false">local total = 0
+for i = 1, 10 do
+  total = total + i
+end
+print(total)</textarea>
+    <button type="button" class="btn big" id="demo-btn">Obfuscate ✨</button>
+    <pre id="demo-out">-- your zesty output lands here…</pre>
+    <div class="left" id="demo-left">log in to squeeze</div>
+  </div>
+</section>
+
+<section class="panel" data-panel="download" hidden>
+  <h2>Grab the app</h2>
+  <p class="center dim">Windows GUI: dashboard, history, themes, Discord login. Free accounts obfuscate up to 3000 chars per script. No install — download and run.</p>
+  <div class="dl-card">
+    <div class="dl-ver" id="dl-ver">LimeVM v2.0.0</div>
+    <div class="cta-row">
+      <a class="btn big" id="dl-btn" href="download.html">Download page</a>
+      <a class="btn ghost" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Get it on Discord</a>
+    </div>
+    <p class="note">Windows 10/11 · ~13MB single file · <span id="dl-sha">sha256 on the download page</span></p>
+  </div>
+  <div class="steps">
+    <div class="card"><h3>1. Download</h3><p>Grab the exe from GitHub or Discord. One file, nothing to install.</p></div>
+    <div class="card"><h3>2. Make an account</h3><p>Register in the app (or up top on this site) — even free runs need one.</p></div>
+    <div class="card"><h3>3. Squeeze</h3><p>Paste Lua, hit Obfuscate. Paid tiers unlock unlimited size + presets.</p></div>
+  </div>
+</section>
+
+<section class="panel" data-panel="pricing" hidden>
+  <h2>Pick your ripeness</h2>
+  <div class="cards">
+    <div class="card"><h3>Basic</h3><div class="price">?</div><p>Core VM obfuscator, GUI app, community support on Discord.</p><a class="btn" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Buy on Discord</a></div>
+    <div class="card hot"><div class="pop">MOST SQUEEZED</div><h3>Pro</h3><div class="price">?</div><p>Everything in Basic, plus max-strength presets, CLI, priority seeds and updates.</p><a class="btn" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Buy on Discord</a></div>
+    <div class="card"><h3>Lifetime</h3><div class="price">?</div><p>Pay once. Every future LimeVM version, forever. Never expires.</p><a class="btn" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Buy on Discord</a></div>
+  </div>
+  <p class="note">Prices set on Discord for now — online checkout (maybe FunPay) comes later.</p>
+</section>
+
+<section class="panel" data-panel="faq" hidden>
+  <h2>Sour questions</h2>
+  <details><summary>Will my script still run exactly the same?</summary><p>Yes. Every release passes 21 differential test cases (original vs obfuscated, byte-identical stdout) plus 140+ real-world scripts.</p></details>
+  <details><summary>Can anyone reverse it?</summary><p>Honest answer: a determined expert with dynamic analysis can eventually lift any client-side VM. LimeVM's job is making that cost weeks instead of minutes — fresh ISA per build, encrypted constants, tripwires.</p></details>
+  <details><summary>How do accounts and activation work?</summary><p>Make a free account here or in the app (username + password, Discord linking supported). Buy a tier on Discord and staff activate you — your app and site both unlock. License files still work for offline-first setups.</p></details>
+  <details><summary>Does it work offline?</summary><p>Yes. Licenses verify offline for 14 days between check-ins; obfuscation itself never needs the internet.</p></details>
+  <details><summary>Is there really a free Discord obfuscator?</summary><p>Yes — <b>/obfuscate</b> in the Discord server, once per day, up to 3000 chars. Same engine, nerfed demo preset.</p></details>
+</section>
+</main>
+
+<footer>
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">discord.gg/ZHuzYBnwSY</a></p>
+</footer>
+
+<div class="modal-back" id="auth-modal" hidden>
+  <div class="modal">
+    <h3 id="auth-title">Log in</h3>
+    <label>Username<input id="auth-user" autocomplete="username" maxlength="20"></label>
+    <label>Password<input id="auth-pass" type="password" autocomplete="current-password"></label>
+    <div class="err" id="auth-err"></div>
+    <div class="cta-row">
+      <button type="button" class="btn" id="auth-go">Log in</button>
+      <button type="button" class="btn ghost" id="auth-swap">Need an account? Register</button>
+    </div>
+    <button type="button" class="x" id="auth-x" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

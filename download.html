@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Download the LimeVM app for Windows.">
+<title>Download LimeVM</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="nav">
+  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
+  <nav><a href="index.html#/features">Features</a><a href="index.html#/demo">Live demo</a><a href="index.html#/pricing">Pricing</a></nav>
+  <a class="btn discord" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Join Discord</a>
+</header>
+
+<section class="panel solo">
+  <h2>Download LimeVM</h2>
+  <p class="center dim">One file, no installer. Windows 10/11, ~13MB.</p>
+  <div class="dl-card">
+    <div class="dl-ver" id="dl-ver">LimeVM v2.0.0</div>
+    <div class="cta-row">
+      <a class="btn big" id="dl-gh" href="https://github.com/purrguy/LimeVM-App/releases/download/v2.0.0/LimeVM.exe">Download .exe</a>
+      <a class="btn ghost" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Mirror on Discord</a>
+    </div>
+    <p class="note">No login needed — same file on Discord if GitHub is slow.</p>
+    <div class="sha">sha256<br><code id="dl-sha">F1262F35CFF47E2A934450D610330110773D3CA05A7ABFAC3F73E34835AAFD05</code></div>
+    <p class="note" id="dl-notes">Tabbed app with accounts, HWID-bound licenses, Discord daily obfuscation.</p>
+  </div>
+  <div class="steps">
+    <div class="card"><h3>1. Run it</h3><p>Double-click. SmartScreen may ask once — it's an unsigned indie exe.</p></div>
+    <div class="card"><h3>2. Register</h3><p>Make your free account inside the app. Takes ten seconds.</p></div>
+    <div class="card"><h3>3. Verify (optional)</h3><p>Compare the sha256 above with your file if you're cautious.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <p><a href="index.html">← back to lime.greedyhudzell.xyz</a></p>
+</footer>
+
+<script>
+fetch('version.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) {
+  if (!v || !v.version) return;
+  document.getElementById('dl-ver').textContent = 'LimeVM v' + v.version;
+  document.getElementById('dl-gh').href = v.url;
+  document.getElementById('dl-sha').textContent = v.sha256;
+  if (v.notes) document.getElementById('dl-notes').textContent = v.notes;
+}).catch(function () {});
+</script>
+</body>
+</html>
