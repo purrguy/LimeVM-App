@@ -27,7 +27,7 @@
      dispatcher — no two outputs look alike.</p>
   <div class="cta-row">
     <a class="btn big" href="#/download">Get LimeVM</a>
-    <a class="btn ghost" href="#/demo">Try it free</a>
+    <a class="btn ghost" href="dashboard.html">Open dashboard</a>
   </div>
   <div class="badges">
     <span>byte-identical differential tests</span>
@@ -43,7 +43,6 @@
 
 <nav class="tabs" id="tabs">
   <a href="#/features" data-tab="features">Features</a>
-  <a href="#/demo" data-tab="demo">Live demo</a>
   <a href="#/download" data-tab="download">Download</a>
   <a href="#/pricing" data-tab="pricing">Pricing</a>
   <a href="#/faq" data-tab="faq">FAQ</a>
@@ -56,21 +55,6 @@
     <div class="card"><div class="emoji">🎲</div><h3>Metamorphic VM</h3><p>Opcode numbers, operand biases, handler spellings and dispatcher shape are re-rolled from your seed. Signature tools starve.</p></div>
     <div class="card"><div class="emoji">🔒</div><h3>Encrypted everything</h3><p>Strings, numbers and globals live as rotate+xor ciphertext, split into chunks. The decoder key stream never repeats.</p></div>
     <div class="card"><div class="emoji">🪤</div><h3>Integrity tripwires</h3><p>Every proto carries a checksum. Patch one byte and the program refuses to run instead of computing garbage.</p></div>
-  </div>
-</section>
-
-<section class="panel" data-panel="demo" hidden>
-  <h2>The real thing, right here</h2>
-  <p class="center dim" id="demo-sub">Log in (free account) and squeeze up to 3 mini-scripts a day (150 chars each) — the actual engine, not a mockup. Paid tiers get 20. Need full size? Grab the app.</p>
-  <div class="demo-box">
-    <textarea id="demo-in" spellcheck="false">local total = 0
-for i = 1, 10 do
-  total = total + i
-end
-print(total)</textarea>
-    <button type="button" class="btn big" id="demo-btn">Obfuscate ✨</button>
-    <pre id="demo-out">-- your zesty output lands here…</pre>
-    <div class="left" id="demo-left">log in to squeeze</div>
   </div>
 </section>
 

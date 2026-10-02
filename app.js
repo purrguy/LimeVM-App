@@ -1,4 +1,4 @@
-// LimeVM site — typing animation, real accounts + live demo via the API.
+// LimeVM site — real accounts via the API.
 'use strict';
 
 var API_BASE = 'https://purrguy.pythonanywhere.com';
@@ -54,8 +54,8 @@ var FRIENDLY = {
 };
 
 window.addEventListener('load', function () {
-  // ---------- tab router (#/demo, #/pricing, …) ----------
-  var TABS = ['features', 'demo', 'download', 'pricing', 'faq'];
+  // ---------- tab router (#/pricing, …) ----------
+  var TABS = ['features', 'download', 'pricing', 'faq'];
   var tabLinks = Array.prototype.slice.call(document.querySelectorAll('#tabs a'));
   var panels = Array.prototype.slice.call(document.querySelectorAll('.panel[data-panel]'));
   function currentTab() {
@@ -80,12 +80,6 @@ window.addEventListener('load', function () {
   var authGo = document.getElementById('auth-go');
   var authSwap = document.getElementById('auth-swap');
   var mode = 'login';
-
-  var demoBtn = document.getElementById('demo-btn');
-  var demoIn = document.getElementById('demo-in');
-  var demoOut = document.getElementById('demo-out');
-  var demoLeft = document.getElementById('demo-left');
-  var demoSub = document.getElementById('demo-sub');
 
   function setMode(m) {
     mode = m;
@@ -113,7 +107,6 @@ window.addEventListener('load', function () {
       });
       acctArea.appendChild(who);
       acctArea.appendChild(out);
-      demoLeft.textContent = 'logged in — squeeze away';
     } else {
       var b = document.createElement('button');
       b.type = 'button';
@@ -122,7 +115,6 @@ window.addEventListener('load', function () {
       b.textContent = 'Log in';
       b.addEventListener('click', function () { setMode('login'); modal.hidden = false; authUser.focus(); });
       acctArea.appendChild(b);
-      demoLeft.textContent = 'log in to squeeze';
     }
   }
 
@@ -164,32 +156,4 @@ window.addEventListener('load', function () {
     renderAcct();
   }
 
-  // ---------- live demo (real engine via /api/obfuscate) ----------
-  var busy = false;
-  demoBtn.addEventListener('click', function () {
-    if (busy) return;
-    if (!session) {
-      setMode('login');
-      modal.hidden = false;
-      demoOut.textContent = '-- log in first — even free squeezes need an account.';
-      return;
-    }
-    var src = demoIn.value;
-    if (!src.trim()) { demoOut.textContent = '-- paste some Lua first.'; return; }
-    if (src.length > 150) { demoOut.textContent = '-- web demo caps at 150 chars — trim it, use /obfuscate on Discord (3000), or grab the app for unlimited.'; return; }
-    busy = true;
-    demoBtn.disabled = true;
-    demoOut.textContent = 'squeezing…';
-    api('POST', '/api/obfuscate', { source: src, account_token: session.token }).then(function (r) {
-      var shown = r.output.length > 6000 ? r.output.slice(0, 6000) + '\n-- … [' + r.output.length + ' chars total, seed ' + r.seed + ']' : r.output;
-      demoOut.textContent = shown;
-      demoLeft.textContent = r.left_today > 0
-        ? r.left_today + ' free squeeze' + (r.left_today === 1 ? '' : 's') + ' left today'
-        : 'all out of juice — come back tomorrow (or go paid)';
-      if (demoSub) demoSub.textContent = 'Seed ' + r.seed + ' · ' + r.in_chars + ' → ' + r.out_chars + ' chars · tier: ' + (r.tier || 'free');
-    }, function (e) {
-      demoOut.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');
-      if (e.code === 'unauthorized') { session = null; clearSession(); renderAcct(); }
-    }).then(function () { busy = false; demoBtn.disabled = false; });
-  });
 });

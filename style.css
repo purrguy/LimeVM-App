@@ -143,9 +143,7 @@ h2 { font-size: clamp(30px, 5vw, 46px); font-weight: 900; text-align: center; ma
   min-height: 220px; white-space: pre-wrap; word-break: break-all; color: var(--fg);
 }
 .tok-k { color: var(--pink); } .tok-s { color: var(--lime); } .tok-n { color: #7b8cff; } .tok-c { color: #5a6656; }
-/* demo */
-.demo { text-align: center; }
-.demo p { color: var(--dim); margin: 10px 0 22px; }
+/* demo-box is shared with the dashboard obfuscator */
 .demo-box { max-width: 720px; margin: 0 auto; display: grid; gap: 14px; }
 .demo-box textarea {
   background: #0a0c0a; color: var(--fg); border: var(--thick); border-radius: 18px;
