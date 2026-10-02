@@ -13,7 +13,8 @@
 <header class="nav">
   <div class="logo"><span class="lime-dot"></span> LimeVM</div>
   <span class="acct" id="acct-area"><button type="button" class="btn small" id="acct-btn">Log in</button></span>
-  <a class="btn discord" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Join Discord</a>
+  <a class="btn ghost" href="dashboard.html">Dashboard</a>
+  <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
 </header>
 
 <section class="hero">
@@ -29,15 +30,15 @@
     <a class="btn ghost" href="#/demo">Try it free</a>
   </div>
   <div class="badges">
-    <span>21/21 differential tests</span>
+    <span>byte-identical differential tests</span>
     <span>per-build metamorphic VM</span>
     <span>140+ real scripts verified</span>
   </div>
 </section>
 
 <div class="marquee"><div class="track">
-  <span>fresh opcode map every build • </span><span>encrypted constants • </span><span>flat dispatcher • </span><span>anti-AI shield • </span><span>integrity tripwires • </span><span>no plaintext leftovers • </span>
-  <span>fresh opcode map every build • </span><span>encrypted constants • </span><span>flat dispatcher • </span><span>anti-AI shield • </span><span>integrity tripwires • </span><span>no plaintext leftovers • </span>
+  <span>fresh opcode map every build • </span><span>encrypted constants • </span><span>flat dispatcher • </span><span>integrity tripwires • </span><span>no plaintext leftovers • </span>
+  <span>fresh opcode map every build • </span><span>encrypted constants • </span><span>flat dispatcher • </span><span>integrity tripwires • </span><span>no plaintext leftovers • </span>
 </div></div>
 
 <nav class="tabs" id="tabs">
@@ -54,14 +55,7 @@
   <div class="cards">
     <div class="card"><div class="emoji">🎲</div><h3>Metamorphic VM</h3><p>Opcode numbers, operand biases, handler spellings and dispatcher shape are re-rolled from your seed. Signature tools starve.</p></div>
     <div class="card"><div class="emoji">🔒</div><h3>Encrypted everything</h3><p>Strings, numbers and globals live as rotate+xor ciphertext, split into chunks. The decoder key stream never repeats.</p></div>
-    <div class="card"><div class="emoji">🪤</div><h3>Integrity tripwires</h3><p>Every proto carries a checksum. Patch one byte and the program silently computes garbage instead of crashing loudly.</p></div>
-    <div class="card"><div class="emoji">🤖</div><h3>Anti-AI shield</h3><p>Decoy banners plus encrypted dead protos. Scrapers and lifters trip over bait before they reach your logic.</p></div>
-  </div>
-  <h2 class="gap">From this… to this</h2>
-  <div class="code-grid">
-    <div class="win"><div class="bar"><i></i><i></i><i></i><span>script.lua</span></div><pre id="code-in"></pre></div>
-    <div class="arrow">→</div>
-    <div class="win"><div class="bar"><i></i><i></i><i></i><span>script.obfuscated.lua</span></div><pre id="code-out"></pre></div>
+    <div class="card"><div class="emoji">🪤</div><h3>Integrity tripwires</h3><p>Every proto carries a checksum. Patch one byte and the program refuses to run instead of computing garbage.</p></div>
   </div>
 </section>
 
@@ -84,10 +78,10 @@ print(total)</textarea>
   <h2>Grab the app</h2>
   <p class="center dim">Windows GUI: dashboard, history, themes, Discord login. Free accounts obfuscate up to 3000 chars per script. No install — download and run.</p>
   <div class="dl-card">
-    <div class="dl-ver" id="dl-ver">LimeVM v2.0.0</div>
+    <div class="dl-ver" id="dl-ver">LimeVM v2.1.0</div>
     <div class="cta-row">
       <a class="btn big" id="dl-btn" href="download.html">Download page</a>
-      <a class="btn ghost" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Get it on Discord</a>
+      <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Get it on Discord</a>
     </div>
     <p class="note">Windows 10/11 · ~13MB single file · <span id="dl-sha">sha256 on the download page</span></p>
   </div>
@@ -101,9 +95,9 @@ print(total)</textarea>
 <section class="panel" data-panel="pricing" hidden>
   <h2>Pick your ripeness</h2>
   <div class="cards">
-    <div class="card"><h3>Basic</h3><div class="price">?</div><p>Core VM obfuscator, GUI app, community support on Discord.</p><a class="btn" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Buy on Discord</a></div>
-    <div class="card hot"><div class="pop">MOST SQUEEZED</div><h3>Pro</h3><div class="price">?</div><p>Everything in Basic, plus max-strength presets, CLI, priority seeds and updates.</p><a class="btn" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Buy on Discord</a></div>
-    <div class="card"><h3>Lifetime</h3><div class="price">?</div><p>Pay once. Every future LimeVM version, forever. Never expires.</p><a class="btn" href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">Buy on Discord</a></div>
+    <div class="card"><h3>Basic</h3><div class="price">?</div><p>Core VM obfuscator, GUI app, community support on Discord.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+    <div class="card hot"><div class="pop">MOST SQUEEZED</div><h3>Pro</h3><div class="price">?</div><p>Everything in Basic, plus max-strength presets, CLI, priority seeds and updates.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+    <div class="card"><h3>Lifetime</h3><div class="price">?</div><p>Pay once. Every future LimeVM version, forever. Never expires.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
   </div>
   <p class="note">Prices set on Discord for now — online checkout (maybe FunPay) comes later.</p>
 </section>
@@ -120,7 +114,7 @@ print(total)</textarea>
 
 <footer>
   <div class="logo"><span class="lime-dot"></span> LimeVM</div>
-  <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/ZHuzYBnwSY" target="_blank" rel="noopener">discord.gg/ZHuzYBnwSY</a></p>
+  <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
 </footer>
 
 <div class="modal-back" id="auth-modal" hidden>

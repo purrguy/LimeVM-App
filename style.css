@@ -224,6 +224,7 @@ footer a { color: var(--lime); }
   border: 2px solid #0a0c0a; box-shadow: 3px 3px 0 #000;
 }
 .panel[hidden] { display: none; }
+.dpanel[hidden] { display: none; }
 .panel.solo { max-width: 860px; }
 h2.gap { margin-top: 44px; }
 .center { text-align: center; }
@@ -244,6 +245,56 @@ h2.gap { margin-top: 44px; }
   user-select: all;
 }
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
+
+/* dashboard */
+.dash {
+  display: flex; gap: 22px; align-items: flex-start;
+  max-width: 1100px; margin: 0 auto; padding: 30px 22px 20px;
+  position: relative; z-index: 1;
+}
+.side {
+  display: grid; gap: 8px; min-width: 170px; position: sticky; top: 16px;
+}
+.side button {
+  background: var(--panel); color: var(--dim); border: var(--thick);
+  border-radius: 14px; padding: 12px 16px; font-weight: 900; font-size: 15px;
+  font-family: inherit; cursor: pointer; text-align: left;
+  box-shadow: 3px 3px 0 #000;
+}
+.side button:hover { color: var(--lime); }
+.side button.active { background: var(--lime); color: #0c0e0c; }
+.side button.ghostle { background: transparent; box-shadow: none; }
+.dash-main { flex: 1; min-width: 0; }
+.dpanel h2 { text-align: left; }
+.dpanel h3 { margin: 26px 0 10px; font-size: 22px; }
+.dpanel p { color: var(--dim); line-height: 1.6; margin: 10px 0; }
+.info-hero { display: flex; gap: 16px; align-items: center; margin-bottom: 6px; }
+.info-hero h2 { margin: 0; }
+.lime-dot.big { width: 52px; height: 52px; }
+.cta-row.left { justify-content: flex-start; }
+.log-row {
+  background: var(--card); border: var(--thick); border-radius: 14px;
+  padding: 12px 16px; margin: 10px 0; box-shadow: 3px 3px 0 #000;
+}
+.log-row b { color: var(--lime); margin-right: 10px; }
+.log-row p { margin: 6px 0 0; }
+.hrow {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  background: var(--card); border: var(--thick); border-radius: 12px;
+  padding: 10px 14px; margin: 8px 0; font-size: 14px;
+}
+.hrow span:first-child { color: var(--lime); font-weight: 700; }
+.demo-box.wide { max-width: none; }
+.filebtn { cursor: pointer; }
+.dpanel textarea {
+  background: #0a0c0a; color: var(--fg); border: var(--thick); border-radius: 18px;
+  padding: 16px; font-family: Consolas, monospace; font-size: 14px; min-height: 180px;
+  resize: vertical; box-shadow: 6px 6px 0 #000; width: 100%;
+}
+@media (max-width: 760px) {
+  .dash { flex-direction: column; }
+  .side { grid-template-columns: 1fr 1fr; width: 100%; position: static; }
+}
 
 /* accessibility: calm everything down when the OS asks for it */
 @media (prefers-reduced-motion: reduce) {

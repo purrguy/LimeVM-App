@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LimeVM dashboard — obfuscate Lua in your browser, history, and plans.">
+<title>LimeVM Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="nav">
+  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
+  <span class="acct" id="dash-acct"></span>
+  <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
+</header>
+
+<main id="dash-login" class="panel solo" hidden>
+  <h2>Dashboard login</h2>
+  <p class="center dim">Same account as the app. Free to make, takes ten seconds.</p>
+  <div class="modal" style="margin:26px auto;max-width:380px">
+    <h3 id="login-title">Log in</h3>
+    <label>Username<input id="login-user" autocomplete="username" maxlength="20"></label>
+    <label>Password<input id="login-pass" type="password" autocomplete="current-password"></label>
+    <div class="err" id="login-err"></div>
+    <div class="cta-row">
+      <button type="button" class="btn" id="login-go">Log in</button>
+      <button type="button" class="btn ghost" id="login-swap">Need an account? Register</button>
+    </div>
+  </div>
+</main>
+
+<main id="dash-app" class="dash" hidden>
+  <nav class="side" id="dash-tabs">
+    <button type="button" data-dtab="info" class="active">🍋 Info</button>
+    <button type="button" data-dtab="obfuscate">✨ Obfuscate</button>
+    <button type="button" data-dtab="history">🕘 History</button>
+    <button type="button" data-dtab="pricing">💎 Pricing</button>
+    <button type="button" id="dash-logout" class="ghostle">Log out</button>
+  </nav>
+
+  <div class="dash-main">
+    <section class="dpanel" data-dpanel="info">
+      <div class="info-hero"><span class="lime-dot big"></span>
+        <div><h2>LimeVM</h2><p class="dim" id="info-who">custom register-VM obfuscator for Lua &amp; Luau</p></div>
+      </div>
+      <p>Every build gets a fresh-shuffled ISA, encrypted constants and a flat dispatcher — no two outputs look alike. Your scripts run byte-identically, just unreadable.</p>
+      <div class="cta-row left">
+        <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join the Discord</a>
+        <a class="btn ghost" href="download.html">Get the app</a>
+      </div>
+      <h3>Changelog</h3>
+      <div class="log">
+        <div class="log-row"><b>v2.1.0</b><span class="dim">2026-10-01</span><p>Compiler miscompile fixes, script short-links with in-app Upload, account subscriptions with expiry, and this dashboard obfuscator.</p></div>
+        <div class="log-row"><b>v2.0.0</b><span class="dim">2026-09-26</span><p>Tabbed app, accounts + Discord login, live web demo, download page.</p></div>
+      </div>
+      <h3>Recent activity</h3>
+      <div id="info-recent" class="dim">loading…</div>
+    </section>
+
+    <section class="dpanel" data-dpanel="obfuscate" hidden>
+      <h2>Squeeze it</h2>
+      <p class="dim">Up to <b>300,000 chars</b>, <b>2 obfuscations per day</b>. The real engine, running on the server.</p>
+      <div class="demo-box wide">
+        <textarea id="ob-in" spellcheck="false" placeholder="-- paste Lua / Luau here…"></textarea>
+        <div class="cta-row left">
+          <label class="btn ghost filebtn">Load .lua file<input type="file" id="ob-file" accept=".lua,.luau,.txt" hidden></label>
+          <span class="dim" id="ob-count">0 / 300000</span>
+        </div>
+        <button type="button" class="btn big" id="ob-btn">Obfuscate ✨</button>
+        <pre id="ob-out">-- your zesty output lands here…</pre>
+        <div class="cta-row left">
+          <button type="button" class="btn" id="ob-dl" disabled>Download .lua</button>
+          <span class="dim" id="ob-left"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="dpanel" data-dpanel="history" hidden>
+      <h2>History</h2>
+      <p class="dim">Your recent dashboard obfuscations (newest first).</p>
+      <div id="hist-list" class="dim">loading…</div>
+    </section>
+
+    <section class="dpanel" data-dpanel="pricing" hidden>
+      <h2>Pick your ripeness</h2>
+      <div class="cards">
+        <div class="card"><h3>Week</h3><div class="price">?</div><p>Full obfuscator for 7 days. App + dashboard + Discord perks.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+        <div class="card hot"><div class="pop">MOST SQUEEZED</div><h3>Month</h3><div class="price">?</div><p>Full obfuscator for 30 days. Best value for active developers.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+        <div class="card"><h3>Year</h3><div class="price">?</div><p>Full obfuscator for a whole year. Set and forget.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+      </div>
+      <p class="note">To buy: join the <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord server</a> and open a ticket — staff activate your account.</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <p><a href="index.html">← back home</a> · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+</footer>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

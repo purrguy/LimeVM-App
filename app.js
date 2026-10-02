@@ -4,44 +4,6 @@
 var API_BASE = 'https://purrguy.pythonanywhere.com';
 var SESSION_KEY = 'limevm_session';
 
-var SRC_LINES = [
-  ['c', '-- my cool script'],
-  ['k', 'local '], ['', 'total = '], ['n', '0'],
-  ['k', 'for '], ['', 'i = '], ['n', '1'], ['', ', '], ['n', '10 '], ['k', 'do'],
-  ['', '  total = total + i'],
-  ['k', 'end'],
-  ['k', 'print'], ['', '(total)'],
-];
-var OUT_CHARS = '-- LimeVM Protected | discord.gg/ZHuzYBnwSY local a=table.unpack or unpack local Gg=(getgenv and getgenv())or _G local H={[41]=function(_i)Rn[(_i[2]-33)]=Rn[(_i[3]-87)]..Rn[(_i[4]-12)]end,}...';
-
-function typeCode(el, lines, speed, done) {
-  el.innerHTML = '';
-  var li = 0, ci = 0, html = '', open = null;
-  function openSpan(cls) { html += '<span class="' + cls + '">'; open = cls; }
-  (function step() {
-    if (li >= lines.length) { if (done) done(); return; }
-    var cls = lines[li][0], text = lines[li][1];
-    if (ci === 0 && cls) openSpan(cls);
-    var ch = text[ci];
-    html += ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch === '&' ? '&amp;' : ch;
-    if (open) html += '</span>';
-    el.innerHTML = html + '▌';
-    ci++;
-    if (ci >= text.length) { li++; ci = 0; open = null; html += '\n'; }
-    setTimeout(step, speed + Math.random() * speed);
-  })();
-}
-
-function typeText(el, text, speed, done) {
-  el.textContent = '';
-  var i = 0;
-  (function step() {
-    el.textContent = text.slice(0, ++i) + (i < text.length ? '▌' : '');
-    if (i < text.length) setTimeout(step, speed);
-    else if (done) done();
-  })();
-}
-
 // ---------- tiny API client ----------
 function api(method, path, body, token) {
   var headers = { 'Content-Type': 'application/json' };
@@ -106,12 +68,6 @@ window.addEventListener('load', function () {
   }
   window.addEventListener('hashchange', function () { showTab(currentTab()); });
   showTab(currentTab());
-
-  typeCode(document.getElementById('code-in'), SRC_LINES, 26, function () {
-    var el = document.getElementById('code-in');
-    el.innerHTML = el.innerHTML.replace(/▌$/, '');
-    typeText(document.getElementById('code-out'), OUT_CHARS, 4);
-  });
 
   var session = loadSession();
   var acctArea = document.getElementById('acct-area');
