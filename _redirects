@@ -1,0 +1,3 @@
+# Clean URLs (Pages serves exact paths; these rewrites keep them pretty).
+/dashboard /dashboard.html 200
+/s/* https://purrguy.pythonanywhere.com/s/:splat 200
