@@ -1,3 +1,4 @@
-# Clean URLs (Pages serves exact paths; these rewrites keep them pretty).
-# /dashboard rewrite TEMP-DISABLED while diagnosing a redirect loop.
+# NOTE: do NOT add a "/dashboard /dashboard.html 200" rewrite — the edge
+# already strips .html itself, and the two fight into an infinite 308 loop.
+# Extensionless URLs resolve natively; this file only keeps the /s/* proxy.
 /s/* https://purrguy.pythonanywhere.com/s/:splat 200
