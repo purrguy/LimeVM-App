@@ -72,7 +72,14 @@
         <pre id="ob-out">-- your zesty output lands here…</pre>
         <div class="cta-row left">
           <button type="button" class="btn" id="ob-dl" disabled>Download .lua</button>
+          <button type="button" class="btn ghost" id="ob-up" disabled>Upload as link</button>
           <span class="dim" id="ob-left"></span>
+        </div>
+        <div id="ob-link" hidden>
+          <p class="dim">Short link (paste the loadstring in your executor):</p>
+          <div class="linkrow"><code id="ob-url"></code><button type="button" class="btn small" id="ob-copy-url">Copy URL</button></div>
+          <pre id="ob-ls"></pre>
+          <div class="cta-row left"><button type="button" class="btn small" id="ob-copy-ls">Copy loadstring</button></div>
         </div>
       </div>
     </section>

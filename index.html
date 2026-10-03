@@ -29,6 +29,7 @@
     <a class="btn big" href="#/download">Get LimeVM</a>
     <a class="btn ghost" href="dashboard.html">Open dashboard</a>
   </div>
+  <p class="verline"><code>v2.1.0</code> <span class="dim">— script links, dashboard obfuscator, fixed engine</span></p>
   <div class="badges">
     <span>byte-identical differential tests</span>
     <span>per-build metamorphic VM</span>
@@ -50,6 +51,7 @@
 
 <main id="panels">
 <section class="panel" data-panel="features">
+  <p class="center"><span class="eyebrow">Why LimeVM</span></p>
   <h2>Why it's sour for reversers</h2>
   <div class="cards">
     <div class="card"><div class="emoji">🎲</div><h3>Metamorphic VM</h3><p>Opcode numbers, operand biases, handler spellings and dispatcher shape are re-rolled from your seed. Signature tools starve.</p></div>
@@ -59,6 +61,7 @@
 </section>
 
 <section class="panel" data-panel="download" hidden>
+  <p class="center"><span class="eyebrow">Download</span></p>
   <h2>Grab the app</h2>
   <p class="center dim">Windows GUI: dashboard, history, themes, Discord login. Free accounts obfuscate up to 3000 chars per script. No install — download and run.</p>
   <div class="dl-card">
@@ -77,6 +80,7 @@
 </section>
 
 <section class="panel" data-panel="pricing" hidden>
+  <p class="center"><span class="eyebrow">Pricing</span></p>
   <h2>Pick your ripeness</h2>
   <div class="cards">
     <div class="card"><h3>Basic</h3><div class="price">?</div><p>Core VM obfuscator, GUI app, community support on Discord.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
@@ -87,6 +91,7 @@
 </section>
 
 <section class="panel" data-panel="faq" hidden>
+  <p class="center"><span class="eyebrow">FAQ</span></p>
   <h2>Sour questions</h2>
   <details><summary>Will my script still run exactly the same?</summary><p>Yes. Every release passes 21 differential test cases (original vs obfuscated, byte-identical stdout) plus 140+ real-world scripts.</p></details>
   <details><summary>Can anyone reverse it?</summary><p>Honest answer: a determined expert with dynamic analysis can eventually lift any client-side VM. LimeVM's job is making that cost weeks instead of minutes — fresh ISA per build, encrypted constants, tripwires.</p></details>
@@ -98,6 +103,14 @@
 
 <footer>
   <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <div class="foot-grid">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="download.html">Download</a>
+    <a href="index.html#/pricing">Pricing</a>
+    <a href="index.html#/faq">FAQ</a>
+    <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
+    <a href="https://github.com/purrguy/LimeVM-App/releases" target="_blank" rel="noopener">Releases</a>
+  </div>
   <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
 </footer>
 

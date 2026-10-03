@@ -189,8 +189,12 @@ window.addEventListener('load', function () {
   var obBtn = document.getElementById('ob-btn');
   var obOut = document.getElementById('ob-out');
   var obDl = document.getElementById('ob-dl');
+  var obUp = document.getElementById('ob-up');
   var obLeft = document.getElementById('ob-left');
-  var lastOutput = '', lastSeed = 0, busy = false;
+  var obLink = document.getElementById('ob-link');
+  var obUrl = document.getElementById('ob-url');
+  var obLs = document.getElementById('ob-ls');
+  var lastOutput = '', lastSeed = 0, lastInChars = 0, busy = false, upBusy = false;
 
   obIn.addEventListener('input', function () {
     var n = obIn.value.length;
@@ -226,10 +230,14 @@ window.addEventListener('load', function () {
     busy = true;
     obBtn.disabled = true;
     obDl.disabled = true;
+    obUp.disabled = true;
     obOut.textContent = 'squeezing… (big scripts take a few seconds)';
     api('POST', '/api/web-obfuscate', { source: src, account_token: session.token }).then(function (r) {
       lastOutput = r.output;
       lastSeed = r.seed;
+      lastInChars = src.length;
+      obUp.disabled = false;
+      obLink.hidden = true;
       var shown = r.output.length > 8000
         ? r.output.slice(0, 8000) + '\n-- … [' + r.out_chars + ' chars total, seed ' + r.seed + ' — hit Download]'
         : r.output;
@@ -243,6 +251,51 @@ window.addEventListener('load', function () {
       obOut.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');
       if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
     }).then(function () { busy = false; obBtn.disabled = false; });
+  });
+
+  function copyText(t, btn, label) {
+    function done() {
+      var old = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(function () { btn.textContent = old; }, 1500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(done, function () { fallback(); });
+    } else { fallback(); }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = t;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  }
+  document.getElementById('ob-copy-url').addEventListener('click', function () {
+    copyText(obUrl.textContent, this, 0);
+  });
+  document.getElementById('ob-copy-ls').addEventListener('click', function () {
+    copyText(obLs.textContent, this, 0);
+  });
+  obUp.addEventListener('click', function () {
+    if (upBusy || !lastOutput) return;
+    upBusy = true;
+    obUp.disabled = true;
+    obUp.textContent = 'Uploading…';
+    api('POST', '/api/scripts', { source: lastOutput, title: 'dashboard seed ' + lastSeed, in_chars: lastInChars }, session.token).then(function (r) {
+      obUrl.textContent = r.url;
+      obLs.textContent = r.loadstring;
+      obLink.hidden = false;
+      var life = r.expires ? 'link expires in 5 days' : 'link never expires';
+      obLeft.textContent = 'link ready — ' + life;
+    }, function (e) {
+      var msg = e.code === 'daily-used' ? 'upload quota used up — back tomorrow'
+        : e.code === 'too-big' ? 'file over the 1M cap'
+        : e.code === 'source-too-big' ? 'original script over the 200K cap'
+        : (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');
+      obLeft.textContent = msg;
+      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+    }).then(function () { upBusy = false; obUp.disabled = false; obUp.textContent = 'Upload as link'; });
   });
 
   // ---------- boot ----------
