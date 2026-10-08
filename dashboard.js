@@ -243,9 +243,10 @@ window.addEventListener('load', function () {
         : r.output;
       obOut.textContent = shown;
       obDl.disabled = false;
-      obLeft.textContent = r.left_today > 0
+      obLeft.textContent = (r.left_today > 0
         ? r.left_today + ' squeeze' + (r.left_today === 1 ? '' : 's') + ' left today'
-        : '2/2 used — back tomorrow';
+        : 'all used — back tomorrow')
+        + (r.bonus ? ' (+1 Work.ink bonus 🎁)' : '');
       loadHistory();
     }, function (e) {
       obOut.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');

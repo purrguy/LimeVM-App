@@ -46,6 +46,7 @@
   <a href="#/features" data-tab="features">Features</a>
   <a href="#/download" data-tab="download">Download</a>
   <a href="#/pricing" data-tab="pricing">Pricing</a>
+  <a href="#/api" data-tab="api">API</a>
   <a href="#/faq" data-tab="faq">FAQ</a>
 </nav>
 
@@ -88,6 +89,16 @@
     <div class="card"><h3>Lifetime</h3><div class="price">?</div><p>Pay once. Every future LimeVM version, forever. Never expires.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
   </div>
   <p class="note">Prices set on Discord for now — online checkout (maybe FunPay) comes later.</p>
+</section>
+
+<section class="panel" data-panel="api" hidden>
+  <p class="center"><span class="eyebrow">Developers</span></p>
+  <h2>API</h2>
+  <p class="center dim">Automate uploads and dashboard obfuscation. Auth: <code>Authorization: Bearer &lt;session token&gt;</code> from login. Quotas reset midnight UTC.</p>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>upload.sh</span></div><pre id="api-doc1"></pre></div>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre id="api-doc2"></pre></div>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre id="api-doc3"></pre></div>
+  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day.</p>
 </section>
 
 <section class="panel" data-panel="faq" hidden>

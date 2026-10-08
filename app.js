@@ -55,7 +55,16 @@ var FRIENDLY = {
 
 window.addEventListener('load', function () {
   // ---------- tab router (#/pricing, …) ----------
-  var TABS = ['features', 'download', 'pricing', 'faq'];
+  var TABS = ['features', 'download', 'pricing', 'api', 'faq'];
+  var API_DOCS = [
+    ['api-doc1', 'TOKEN=$(curl -s -X POST https://purrguy.pythonanywhere.com/api/auth/login -H "Content-Type: application/json" -d \'{"username":"you","password":"secret"}\' | grep -o \'"token":"[^"]*"\' | cut -d\\" -f4)\n\ncurl -s -X POST https://purrguy.pythonanywhere.com/api/scripts -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d \'{"source":"print(1)","title":"demo"}\''],
+    ['api-doc2', 'curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate -H "Content-Type: application/json" -d \'{"source":"print(40 + 2)","account_token":"LOGIN_TOKEN"}\''],
+    ['api-doc3', '-- run a hosted script in any executor:\nloadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()']
+  ];
+  API_DOCS.forEach(function (pair) {
+    var el = document.getElementById(pair[0]);
+    if (el) el.textContent = pair[1];
+  });
   var tabLinks = Array.prototype.slice.call(document.querySelectorAll('#tabs a'));
   var panels = Array.prototype.slice.call(document.querySelectorAll('.panel[data-panel]'));
   function currentTab() {
