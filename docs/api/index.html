@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LimeVM HTTP API reference: auth, uploads, obfuscation, history, API keys.">
+<title>LimeVM API docs</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="nav">
+  <div class="logo"><a href="/index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
+  <nav><a href="/index.html#/features">Features</a><a href="/dashboard.html">Dashboard</a><a href="/index.html#/pricing">Pricing</a></nav>
+  <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
+</header>
+
+<section class="panel solo">
+  <p class="center"><span class="eyebrow">Developers</span></p>
+  <h2>API reference</h2>
+  <p class="center dim">Base URL <code>https://purrguy.pythonanywhere.com</code> · JSON everywhere · quotas reset midnight UTC.</p>
+
+  <h2 class="gap">Auth</h2>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>login.sh</span></div><pre># 1. log in (or register) to get a session token (valid 30 days)
+curl -s -X POST https://purrguy.pythonanywhere.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"you","password":"secret"}'
+# → {"ok":true,"token":"…","username":"you","tier":"free"}</pre></div>
+  <p class="note">Then send it as <code>Authorization: Bearer TOKEN</code>, or use an <b>API key</b> (<code>lm_…</code>, created in the dashboard/API tab or the app) as <code>Bearer</code> or <code>X-API-Key</code> header. API keys share your account's quotas — same limits, no doubling.</p>
+
+  <h2 class="gap">Scripts (short links)</h2>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>upload.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/scripts \
+  -H "X-API-Key: lm_YOUR_KEY" -H "Content-Type: application/json" \
+  -d '{"source":"print(1)","title":"demo"}'
+# → {"ok":true,"slug":"AB12CD","url":"https://lime.greedyhudzell.xyz/s/AB12CD",
+#    "loadstring":"loadstring(game:HttpGet(\"…\"))()","duplicate":false,…}</pre></div>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>manage.sh</span></div><pre>curl -s https://purrguy.pythonanywhere.com/api/scripts -H "X-API-Key: lm_YOUR_KEY"
+curl -s -X DELETE https://purrguy.pythonanywhere.com/api/scripts/AB12CD -H "X-API-Key: lm_YOUR_KEY"</pre></div>
+  <p class="note">Limits: file ≤1M chars, original source ≤200K chars · free 3/day (links die in 5 days) · paid 20/day (never expire) · re-uploading the same script returns the existing link.</p>
+
+  <h2 class="gap">Obfuscate</h2>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate \
+  -H "Content-Type: application/json" \
+  -d '{"source":"print(40 + 2)","account_token":"LOGIN_TOKEN"}'
+# → {"ok":true,"seed":123,"output":"-- limevm obfuscated…","left_today":1,…}</pre></div>
+  <p class="note">Dashboard obfuscator: 300k chars max, 2/day (+1 with both Work.ink steps done). Same endpoint powers the dashboard tab.</p>
+
+  <h2 class="gap">History &amp; keys</h2>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>misc.sh</span></div><pre>curl -s https://purrguy.pythonanywhere.com/api/web-history -H "X-API-Key: lm_YOUR_KEY"
+
+curl -s -X POST https://purrguy.pythonanywhere.com/api/keys \
+  -H "Authorization: Bearer LOGIN_TOKEN" -H "Content-Type: application/json" \
+  -d '{"name":"my bot"}'
+# → {"ok":true,"id":"…","api_key":"lm_…"}  ← shown ONCE, then only hashes exist
+
+curl -s -X DELETE https://purrguy.pythonanywhere.com/api/keys/KEY_ID -H "Authorization: Bearer LOGIN_TOKEN"</pre></div>
+
+  <h2 class="gap">Fetch in executors</h2>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre>-- run any hosted script (no auth needed to fetch):
+loadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()</pre></div>
+
+  <h2 class="gap">Errors</h2>
+  <div class="card">
+    <p><code>401 unauthorized</code> — bad/expired token or key · <code>429 daily-used / rate-limited</code> — quota hit, back tomorrow · <code>400 too-big / source-too-big</code> — over size caps · <code>404 unknown-script</code> — bad slug or revoked key.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <div class="foot-grid">
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/download.html">Download</a>
+    <a href="/index.html#/pricing">Pricing</a>
+    <a href="/index.html#/faq">FAQ</a>
+    <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
+    <a href="https://github.com/purrguy/LimeVM-App/releases" target="_blank" rel="noopener">Releases</a>
+  </div>
+  <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+</footer>
+</body>
+</html>

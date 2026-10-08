@@ -76,6 +76,7 @@ window.addEventListener('load', function () {
   function showApp() {
     loginView.hidden = true;
     appView.hidden = false;
+    sessionValid = true;
     renderAcct();
     loadHistory();
     showDTab('info');
@@ -107,11 +108,43 @@ window.addEventListener('load', function () {
       session = { token: r.token, username: r.username, tier: r.tier || 'free' };
       saveSession(session);
       loginPass.value = '';
+      sessionValid = true;
       showApp();
     }, function (e) {
       loginErr.textContent = FRIENDLY[e.code] || ('Failed: ' + e.code);
     }).then(function () { loginGo.disabled = false; });
   });
+
+  // ---------- session gate: nothing renders without a live session ----
+  var sessionValid = false;
+  function lockSession() {
+    session = null;
+    sessionValid = false;
+    clearSession();
+    try { lastOutput = ''; } catch (e) {}
+    ['hist-list', 'info-recent', 'key-list'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = '';
+    });
+    try {
+      var oo = document.getElementById('ob-out');
+      if (oo) oo.textContent = '-- your zesty output lands here…';
+    } catch (e) {}
+    var fresh = document.getElementById('key-fresh');
+    if (fresh) { fresh.hidden = true; fresh.textContent = ''; }
+    showLogin();
+    setMode('login');
+  }
+  function checkSession(then) {
+    if (!session) { lockSession(); return; }
+    api('GET', '/api/auth/me', undefined, session.token).then(function (me) {
+      session.username = me.username;
+      session.tier = me.tier;
+      sessionValid = true;
+      saveSession(session);
+      then(true);
+    }, function () { lockSession(); });
+  }
 
   // ---------- header account ----------
   var acctArea = document.getElementById('dash-acct');
@@ -125,30 +158,34 @@ window.addEventListener('load', function () {
     out.type = 'button';
     out.className = 'btn small ghost';
     out.textContent = 'Log out';
-    out.addEventListener('click', function () {
-      api('POST', '/api/auth/logout', {}, session.token).catch(function () {});
-      session = null;
-      clearSession();
-      showLogin();
-      setMode('login');
-    });
+      out.addEventListener('click', function () {
+        if (session) api('POST', '/api/auth/logout', {}, session.token).catch(function () {});
+        lockSession();
+      });
     acctArea.appendChild(who);
     acctArea.appendChild(out);
   }
   document.getElementById('dash-logout').addEventListener('click', function () {
-    api('POST', '/api/auth/logout', {}, session.token).catch(function () {});
-    session = null;
-    clearSession();
-    showLogin();
-    setMode('login');
+    if (session) api('POST', '/api/auth/logout', {}, session.token).catch(function () {});
+    lockSession();
   });
 
   // ---------- left tabs ----------
   var tabBtns = Array.prototype.slice.call(document.querySelectorAll('#dash-tabs [data-dtab]'));
   var panels = Array.prototype.slice.call(document.querySelectorAll('.dpanel[data-dpanel]'));
-  function showDTab(name) {
+  function showDTabNow(name) {
     tabBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-dtab') === name); });
     panels.forEach(function (p) { p.hidden = p.getAttribute('data-dpanel') !== name; });
+  }
+  function showDTab(name) {
+    // data tabs always revalidate: a stale/expired token locks instantly,
+    // never renders.
+    if (!session) { lockSession(); return; }
+    if (!sessionValid && (name === 'obfuscate' || name === 'history' || name === 'api')) {
+      checkSession(function () { showDTabNow(name); });
+      return;
+    }
+    showDTabNow(name);
   }
   tabBtns.forEach(function (b) {
     b.addEventListener('click', function () { showDTab(b.getAttribute('data-dtab')); });
@@ -174,9 +211,7 @@ window.addEventListener('load', function () {
       recent.innerHTML = rows.slice(0, 5).map(histRow).join('');
       full.innerHTML = rows.map(histRow).join('');
     }, function (e) {
-      if (e.code === 'unauthorized') {
-        session = null; clearSession(); showLogin(); setMode('login'); return;
-      }
+      if (e.code === 'unauthorized') { lockSession(); return; }
       recent.textContent = 'could not load history.';
       full.textContent = 'could not load history.';
     });
@@ -250,7 +285,7 @@ window.addEventListener('load', function () {
       loadHistory();
     }, function (e) {
       obOut.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');
-      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+      if (e.code === 'unauthorized') { lockSession(); }
     }).then(function () { busy = false; obBtn.disabled = false; });
   });
 
@@ -295,7 +330,7 @@ window.addEventListener('load', function () {
         : e.code === 'source-too-big' ? 'original script over the 200K cap'
         : (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');
       obLeft.textContent = msg;
-      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+      if (e.code === 'unauthorized') { lockSession(); }
     }).then(function () { upBusy = false; obUp.disabled = false; obUp.textContent = 'Upload as link'; });
   });
 
@@ -319,7 +354,7 @@ window.addEventListener('load', function () {
       }).join('');
     }, function (e) {
       box.textContent = 'could not load keys.';
-      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+      if (e.code === 'unauthorized') { lockSession(); }
     });
   }
   document.getElementById('key-new').addEventListener('click', function () {
@@ -335,7 +370,7 @@ window.addEventListener('load', function () {
     }, function (e) {
       fresh.hidden = false;
       fresh.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code));
-      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+      if (e.code === 'unauthorized') { lockSession(); }
     });
   });
   document.getElementById('key-list').addEventListener('click', function (e) {
@@ -355,19 +390,20 @@ window.addEventListener('load', function () {
   document.getElementById('api-doc2').textContent =
     'curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate -H "X-API-Key: lm_YOUR_KEY" -H "Content-Type: application/json" -d \'{"source":"print(40 + 2)"}\'';
 
-  // ---------- boot ----------
+  // ---------- boot: login gate first, app content never flashes ------
+  showLogin();
+  setMode('login');
+  document.getElementById('login-err').textContent =
+    session ? 'checking session…' : '';
   if (session) {
     api('GET', '/api/auth/me', undefined, session.token).then(function (me) {
       session.username = me.username;
       session.tier = me.tier;
       saveSession(session);
+      sessionValid = true;
       showApp();
     }, function () {
-      session = null;
-      clearSession();
-      showLogin();
+      lockSession();
     });
-  } else {
-    showLogin();
   }
 });
