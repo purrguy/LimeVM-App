@@ -36,6 +36,7 @@
     <button type="button" data-dtab="info" class="active">🍋 Info</button>
     <button type="button" data-dtab="obfuscate">✨ Obfuscate</button>
     <button type="button" data-dtab="history">🕘 History</button>
+    <button type="button" data-dtab="api">🔑 API</button>
     <button type="button" data-dtab="pricing">💎 Pricing</button>
     <button type="button" id="dash-logout" class="ghostle">Log out</button>
   </nav>
@@ -88,6 +89,23 @@
       <h2>History</h2>
       <p class="dim">Your recent dashboard obfuscations (newest first).</p>
       <div id="hist-list" class="dim">loading…</div>
+    </section>
+
+    <section class="dpanel" data-dpanel="api" hidden>
+      <h2>API keys</h2>
+      <p class="dim">Automate uploads and obfuscation. Keys share your account's quotas — same limits, no doubling. Full keys are shown <b>once</b>; only hashes are stored.</p>
+      <div class="demo-box wide">
+        <div class="cta-row left">
+          <input type="text" id="key-name" maxlength="40" placeholder="Key name (e.g. my bot)" style="flex:1;min-width:200px"/>
+          <button type="button" class="btn" id="key-new">Create key</button>
+        </div>
+        <pre id="key-fresh" hidden></pre>
+        <div id="key-list" class="dim">loading…</div>
+      </div>
+      <h3>Docs</h3>
+      <p class="dim">Send the key as <code>Authorization: Bearer …</code> or <code>X-API-Key</code> header.</p>
+      <pre id="api-doc1"></pre>
+      <pre id="api-doc2"></pre>
     </section>
 
     <section class="dpanel" data-dpanel="pricing" hidden>

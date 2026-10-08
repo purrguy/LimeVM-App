@@ -333,6 +333,17 @@ h2.gap { margin-top: 44px; }
 }
 .hrow span:first-child { color: var(--lime); font-weight: 700; }
 .demo-box.wide { max-width: none; }
+.demo-box input[type=text] {
+  background: #0a0c0a; color: var(--fg); border: var(--thick); border-radius: 12px;
+  padding: 10px 14px; font-size: 14px; font-family: inherit;
+}
+.keyrow {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  background: #0a0c0a; border: var(--thick); border-radius: 12px;
+  padding: 10px 14px; margin: 8px 0; font-size: 14px;
+}
+.keyrow code { color: var(--lime); }
+.keyrow .dim { font-size: 12px; }
 .linkrow {
   display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
   background: #0a0c0a; border: var(--thick); border-radius: 12px;

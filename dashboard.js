@@ -299,6 +299,62 @@ window.addEventListener('load', function () {
     }).then(function () { upBusy = false; obUp.disabled = false; obUp.textContent = 'Upload as link'; });
   });
 
+  // ---------- API keys ----------
+  function escH(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function loadKeys() {
+    var box = document.getElementById('key-list');
+    api('GET', '/api/keys', undefined, session.token).then(function (r) {
+      var rows = r.keys || [];
+      if (!rows.length) {
+        box.textContent = 'no keys yet — create one above.';
+        return;
+      }
+      box.innerHTML = rows.map(function (k) {
+        return '<div class="keyrow"><code>' + escH(k.prefix) + '…</code>'
+          + '<span>' + escH(k.name) + '</span>'
+          + '<span class="dim">last used ' + (k.last_used ? new Date(k.last_used * 1000).toLocaleString() : 'never') + '</span>'
+          + '<button type="button" class="btn small" data-revoke="' + escH(k.id) + '">Revoke</button></div>';
+      }).join('');
+    }, function (e) {
+      box.textContent = 'could not load keys.';
+      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+    });
+  }
+  document.getElementById('key-new').addEventListener('click', function () {
+    var nameEl = document.getElementById('key-name');
+    var fresh = document.getElementById('key-fresh');
+    var name = (nameEl.value || '').trim() || 'api key';
+    fresh.hidden = true;
+    api('POST', '/api/keys', { name: name }, session.token).then(function (r) {
+      fresh.hidden = false;
+      fresh.textContent = 'COPY IT NOW — shown once:\n' + r.api_key;
+      nameEl.value = '';
+      loadKeys();
+    }, function (e) {
+      fresh.hidden = false;
+      fresh.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code));
+      if (e.code === 'unauthorized') { session = null; clearSession(); showLogin(); setMode('login'); }
+    });
+  });
+  document.getElementById('key-list').addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-revoke]') : null;
+    if (!b) return;
+    if (!confirm('Revoke this key? Integrations using it break immediately.')) return;
+    api('DELETE', '/api/keys/' + b.getAttribute('data-revoke'), {}, session.token).then(function () {
+      loadKeys();
+    }, function () { alert('Revoke failed.'); });
+  });
+  var _origShowApp = showApp;
+  showApp = function () { _origShowApp(); loadKeys(); };
+  var _origShowDTab = showDTab;
+  showDTab = function (name) { _origShowDTab(name); if (name === 'api') loadKeys(); };
+  document.getElementById('api-doc1').textContent =
+    'curl -s -X POST https://purrguy.pythonanywhere.com/api/scripts -H "X-API-Key: lm_YOUR_KEY" -H "Content-Type: application/json" -d \'{"source":"print(1)"}\'';
+  document.getElementById('api-doc2').textContent =
+    'curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate -H "X-API-Key: lm_YOUR_KEY" -H "Content-Type: application/json" -d \'{"source":"print(40 + 2)"}\'';
+
   // ---------- boot ----------
   if (session) {
     api('GET', '/api/auth/me', undefined, session.token).then(function (me) {
