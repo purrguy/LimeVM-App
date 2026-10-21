@@ -9,7 +9,7 @@
   --pink: #ff7ad9;
   --thick: 3px solid #0a0c0a;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; overflow-wrap: break-word; }
 ::selection { background: var(--lime); color: #0c0e0c; }
 body {
   background: var(--bg);
@@ -44,7 +44,7 @@ header.nav, section, footer { position: relative; z-index: 1; }
 /* nav */
 header.nav {
   display: flex; align-items: center; gap: 14px;
-  padding: 14px 28px; max-width: 1100px; margin: 0 auto;
+  padding: 14px 28px; width: 100%; max-width: none; margin: 0;
   position: sticky; top: 0; z-index: 30;
   background: rgba(12, 14, 12, .82);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -57,9 +57,9 @@ header.nav .logo { margin-right: auto; }
   border: 2px solid var(--lime-dim); border-radius: 999px;
   padding: 5px 16px; margin-bottom: 14px;
 }
-.logo { font-size: 26px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+.logo { font-size: 26px; font-weight: 900; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
 .lime-dot {
-  width: 26px; height: 26px; border-radius: 50%; display: inline-block;
+  width: 26px; height: 26px; border-radius: 50%; display: inline-block; flex-shrink: 0;
   background: radial-gradient(circle at 35% 35%, var(--lime), var(--lime-dim));
   border: var(--thick); animation: spin 7s linear infinite;
 }
@@ -151,11 +151,12 @@ h2 { font-size: clamp(30px, 5vw, 46px); font-weight: 900; text-align: center; ma
 .card p { color: var(--dim); line-height: 1.55; }
 .card .price { font-size: 40px; font-weight: 900; color: var(--lime); margin: 6px 0 10px; }
 .card .btn { margin-top: 14px; }
-.card.hot { background: #1d2412; outline: 3px solid var(--lime); position: relative; }
+.card.hot { background: #1d2412; outline: 3px solid var(--lime); position: relative; overflow: visible; z-index: 2; }
 .pop {
   position: absolute; top: -16px; left: 50%; transform: translateX(-50%) rotate(-2deg);
   background: var(--pink); color: #0c0e0c; font-weight: 900; font-size: 13px;
   padding: 4px 14px; border-radius: 999px; border: var(--thick); white-space: nowrap;
+  z-index: 5; box-shadow: 3px 3px 0 #000;
 }
 .note { text-align: center; color: var(--dim); margin-top: 22px; }
 /* code windows */

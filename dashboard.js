@@ -247,6 +247,109 @@ window.addEventListener('load', function () {
     rd.readAsText(f);
     obFile.value = '';
   });
+
+  // ---------- saved (pre-obfuscation) scripts ----------
+  var SAVED_KEY = 'limevm.savedScripts.v1';
+  var obSave = document.getElementById('ob-save');
+  var obSaved = document.getElementById('ob-saved');
+  var obLoad = document.getElementById('ob-load');
+  var obDel = document.getElementById('ob-del');
+  var obSaveInfo = document.getElementById('ob-saveinfo');
+
+  function loadSavedList() {
+    try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function storeSavedList(list) {
+    try { localStorage.setItem(SAVED_KEY, JSON.stringify(list)); return true; } catch (e) { return false; }
+  }
+  function refreshSavedSelect() {
+    var list = loadSavedList();
+    var sel = obSaved;
+    var cur = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    list.forEach(function (s, i) {
+      var o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = s.name + ' (' + Math.round(s.size / 1024) + 'KB)';
+      sel.appendChild(o);
+    });
+    if (cur && sel.querySelector('option[value="' + cur + '"]')) sel.value = cur;
+    obSaveInfo.textContent = list.length + ' saved script(s) in this browser. ' + (list.length ? 'Total ~' + Math.round(list.reduce(function (a, s) { return a + s.size; }, 0) / 1024) + 'KB.' : '');
+  }
+  async function compressText(text) {
+    if (!('CompressionStream' in window)) return { data: text, kind: 'raw' };
+    try {
+      var cs = new CompressionStream('gzip');
+      var w = cs.writable.getWriter();
+      w.write(new TextEncoder().encode(text));
+      w.close();
+      var buf = await new Response(cs.readable).arrayBuffer();
+      var bytes = new Uint8Array(buf);
+      var bin = '';
+      for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return { data: btoa(bin), kind: 'gzip' };
+    } catch (e) { return { data: text, kind: 'raw' }; }
+  }
+  async function decompressText(entry) {
+    if (entry.kind !== 'gzip') return entry.data;
+    try {
+      var bin = atob(entry.data);
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      var ds = new DecompressionStream('gzip');
+      var w = ds.writable.getWriter();
+      w.write(bytes);
+      w.close();
+      var buf = await new Response(ds.readable).arrayBuffer();
+      return new TextDecoder().decode(buf);
+    } catch (e) { return ''; }
+  }
+
+  if (obSave) obSave.addEventListener('click', async function () {
+    var txt = obIn.value;
+    if (!txt.trim()) { obSaveInfo.textContent = 'Nothing to save �?" paste a script first.'; return; }
+    var name = prompt('Name for this saved script:', 'script-' + new Date().toISOString().slice(0, 10));
+    if (!name) return;
+    name = name.trim().slice(0, 60);
+    var c = await compressText(txt);
+    var entry = { name: name, data: c.data, kind: c.kind, size: txt.length, savedAt: Date.now() };
+    var list = loadSavedList();
+    list.unshift(entry);
+    // cap: keep total compressed-ish size under ~4MB of localStorage budget
+    var total = 0;
+    var kept = [];
+    for (var i = 0; i < list.length; i++) {
+      if (total + list[i].size > 4 * 1024 * 1024) break;
+      kept.push(list[i]);
+      total += list[i].size;
+    }
+    if (!storeSavedList(kept)) { obSaveInfo.textContent = 'Storage full �?" could not save.'; return; }
+    refreshSavedSelect();
+    obSaveInfo.textContent = 'Saved "' + name + '" (' + Math.round(txt.length / 1024) + 'KB raw, ' + (c.kind === 'gzip' ? 'compressed' : 'raw') + ').';
+  });
+  if (obLoad) obLoad.addEventListener('click', async function () {
+    var idx = parseInt(obSaved.value, 10);
+    if (isNaN(idx)) { obSaveInfo.textContent = 'Pick a saved script first.'; return; }
+    var list = loadSavedList();
+    var entry = list[idx];
+    if (!entry) { obSaveInfo.textContent = 'Not found.'; return; }
+    var txt = await decompressText(entry);
+    if (!txt) { obSaveInfo.textContent = 'Could not read saved script.'; return; }
+    obIn.value = txt;
+    obIn.dispatchEvent(new Event('input'));
+    obSaveInfo.textContent = 'Loaded "' + entry.name + '".';
+  });
+  if (obDel) obDel.addEventListener('click', function () {
+    var idx = parseInt(obSaved.value, 10);
+    if (isNaN(idx)) { obSaveInfo.textContent = 'Pick a saved script first.'; return; }
+    var list = loadSavedList();
+    var name = list[idx] ? list[idx].name : '';
+    list.splice(idx, 1);
+    storeSavedList(list);
+    refreshSavedSelect();
+    obSaveInfo.textContent = 'Deleted "' + name + '".';
+  });
+  refreshSavedSelect();
   obDl.addEventListener('click', function () {
     if (!lastOutput) return;
     var blob = new Blob([lastOutput], { type: 'text/plain' });

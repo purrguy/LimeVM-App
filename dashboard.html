@@ -67,8 +67,13 @@
         <textarea id="ob-in" spellcheck="false" placeholder="-- paste Lua / Luau here…"></textarea>
         <div class="cta-row left">
           <label class="btn ghost filebtn">Load .lua file<input type="file" id="ob-file" accept=".lua,.luau,.txt" hidden></label>
+          <button type="button" class="btn ghost" id="ob-save">Save input</button>
+          <select id="ob-saved" class="btn ghost" style="min-width:160px;padding:8px 12px;font-size:13px"><option value="">Saved scripts...</option></select>
+          <button type="button" class="btn ghost" id="ob-load">Load</button>
+          <button type="button" class="btn ghost" id="ob-del">Delete</button>
           <span class="dim" id="ob-count">0 / 300000</span>
         </div>
+        <div class="dim" id="ob-saveinfo" style="font-size:12px;margin-top:4px"></div>
         <button type="button" class="btn big" id="ob-btn">Obfuscate ✨</button>
         <pre id="ob-out">-- your zesty output lands here…</pre>
         <div class="cta-row left">
