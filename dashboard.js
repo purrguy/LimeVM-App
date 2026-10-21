@@ -350,6 +350,28 @@ window.addEventListener('load', function () {
     obSaveInfo.textContent = 'Deleted "' + name + '".';
   });
   refreshSavedSelect();
+  async function autoSaveScript(text) {
+    if (!text || !text.trim()) return;
+    var list = loadSavedList();
+    // skip if identical to the most recent saved entry
+    if (list.length && list[0].size === text.length) {
+      try {
+        var last = await decompressText(list[0]);
+        if (last === text) return;
+      } catch (e) {}
+    }
+    var c = await compressText(text);
+    var name = 'auto ' + new Date().toLocaleString();
+    var entry = { name: name, data: c.data, kind: c.kind, size: text.length, savedAt: Date.now(), auto: true };
+    list.unshift(entry);
+    var total = 0, kept = [];
+    for (var i = 0; i < list.length; i++) {
+      if (total + list[i].size > 4 * 1024 * 1024) break;
+      kept.push(list[i]); total += list[i].size;
+    }
+    storeSavedList(kept);
+    refreshSavedSelect();
+  }
   obDl.addEventListener('click', function () {
     if (!lastOutput) return;
     var blob = new Blob([lastOutput], { type: 'text/plain' });
@@ -386,6 +408,7 @@ window.addEventListener('load', function () {
         : 'all used — back tomorrow')
         + (r.bonus ? ' (+1 Work.ink bonus 🎁)' : '');
       loadHistory();
+      autoSaveScript(src);
     }, function (e) {
       obOut.textContent = '-- ' + (FRIENDLY[e.code] || ('failed: ' + e.code)) + (e.detail ? ' ' + e.detail : '');
       if (e.code === 'unauthorized') { lockSession(); }
