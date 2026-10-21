@@ -1,7 +1,7 @@
 // LimeVM dashboard — login, server-side obfuscation, history, pricing.
 'use strict';
 
-var API_BASE = 'https://purrguy.pythonanywhere.com';
+var API_BASE = '';
 var SESSION_KEY = 'limevm_session';
 var MAX_CHARS = 300000;
 
