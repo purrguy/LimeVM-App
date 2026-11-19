@@ -644,7 +644,10 @@ select.btn option { color: #0a0d09; }
 #dash-app[hidden], #dash-login[hidden], .dash[hidden] { display: none !important; }
 
 /* login */
-.login-shell { padding-top: 48px; }
+.login-shell {
+  padding-top: 48px; width: 100%; max-width: 880px; margin: 0 auto;
+}
+.login-shell > p { text-align: center; }
 .login-card { margin: 26px auto; max-width: 390px; text-align: left; }
 .login-card .cta-row { justify-content: flex-start; }
 
@@ -755,7 +758,7 @@ select.btn option { color: #0a0d09; }
 
 /* overview tiles */
 .dash-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
   gap: 12px; margin: 22px 0;
 }
 .dash-tile {
@@ -797,7 +800,7 @@ select.btn option { color: #0a0d09; }
 #ob-btn { width: 100%; }
 
 /* plans: 2x2 on desktop, single column on phones */
-.plans { grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); }
+.plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .plans .card { display: flex; flex-direction: column; }
 .plans .card .price { font-size: 34px; margin: 2px 0 10px; }
 .plans .card .feature-list { margin-bottom: 4px; }
@@ -881,4 +884,5 @@ table.api code { white-space: nowrap; }
   #ob-count { margin-left: 0; }
   .status-pill { display: none; }
   .plans .card { padding: 20px 18px; }
+  .plans { grid-template-columns: 1fr; }
 }
