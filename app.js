@@ -1,6 +1,9 @@
 // LimeVM site — real accounts via the API.
 'use strict';
 
+// Progressively enhanced: scroll-reveal only applies when this flag is set.
+document.documentElement.classList.add('js');
+
 var API_BASE = '';
 var SESSION_KEY = 'limevm_session';
 
