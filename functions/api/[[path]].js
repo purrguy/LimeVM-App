@@ -1,6 +1,11 @@
 export async function onRequest(context) {
   const url = new URL(context.request.url);
 
+  // The API reference is a static page, not an API call.
+  if (url.pathname === '/api/docs' || url.pathname.startsWith('/api/docs/')) {
+    return context.next();
+  }
+
   // Handle CORS preflight
   if (context.request.method === 'OPTIONS') {
     return new Response(null, {
