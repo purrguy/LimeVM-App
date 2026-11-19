@@ -2,3 +2,7 @@
 # already strips .html itself, and the two fight into an infinite 308 loop.
 # Extensionless URLs resolve natively; this file only keeps the /s/* proxy.
 /s/* https://purrguy.pythonanywhere.com/s/:splat 200
+
+# The API reference moved to /api/docs/.
+/docs/api/ /api/docs/ 301
+/docs/api/* /api/docs/:splat 301

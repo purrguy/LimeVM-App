@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LimeVM HTTP API reference: authentication, obfuscation, short links, API keys and the private no-quota endpoint.">
+<meta name="theme-color" content="#070907">
+<link rel="canonical" href="https://lime.purrguy.me/api/docs/">
+<title>LimeVM API reference</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="nav">
+  <div class="logo"><a href="/index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
+  <nav><a href="/docs/">Docs</a><a href="/index.html#/pricing">Pricing</a><a href="/dashboard.html">Dashboard</a></nav>
+  <a class="btn ghost" href="/dashboard.html">Get a key</a>
+  <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
+</header>
+
+<section class="panel solo">
+  <p class="center"><span class="eyebrow">Developers</span></p>
+  <h2>API reference</h2>
+  <p class="center dim">Base URL <code>https://purrguy.pythonanywhere.com</code> · JSON in, JSON out · quotas reset at midnight UTC.</p>
+  <div class="doc-nav">
+    <a href="#auth">Authentication</a>
+    <a href="#limits">Limits</a>
+    <a href="#endpoints">Endpoints</a>
+    <a href="#examples">Examples</a>
+    <a href="#private">Private API</a>
+    <a href="#errors">Errors</a>
+    <a href="/docs/">Guides</a>
+  </div>
+
+  <div class="prose">
+
+    <h3 id="auth">Authentication</h3>
+    <p>Three ways to authenticate, depending on the endpoint:</p>
+    <ul>
+      <li><b>Session token</b> — returned by register/login, valid 30 days. Send <code>Authorization: Bearer &lt;token&gt;</code>. Best for the dashboard and personal scripts.</li>
+      <li><b>API key</b> — <code>lm_…</code>, created in the dashboard under <b>API keys</b> or in the app. Send it as <code>Authorization: Bearer lm_…</code> or <code>X-API-Key: lm_…</code>. Keys share your account's quotas.</li>
+      <li><b>Private key</b> — a fixed Bearer key for <code>POST /api/v2/obfuscate</code> only. No daily quota and a 1M-character limit.</li>
+    </ul>
+    <p>The full API key is shown <b>once</b> at creation. LimeVM stores only a hash, so a lost key cannot be recovered — revoke it and make a new one.</p>
+
+    <h3 id="limits">Plans and limits</h3>
+    <div class="table-wrap">
+      <table class="api">
+        <thead><tr><th>Capability</th><th>Free</th><th>Paid (Week / Month / Year)</th><th>Lifetime</th></tr></thead>
+        <tbody>
+          <tr><td>Obfuscate via app/API</td><td>3,000 chars</td><td>Full engine</td><td>Full engine</td></tr>
+          <tr><td>Obfuscations per day</td><td>3</td><td>20</td><td><b>Unlimited</b></td></tr>
+          <tr><td>Dashboard obfuscator</td><td>2/day, 300k chars</td><td>2/day, 300k chars</td><td><b>Unlimited</b>, 300k chars</td></tr>
+          <tr><td>Script uploads</td><td>3/day, 5-day links</td><td>20/day, permanent</td><td>20/day, permanent</td></tr>
+          <tr><td>Private API v2</td><td>—</td><td>—</td><td>Bearer key, 1M chars, no quota</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="endpoints">Endpoints</h3>
+    <div class="table-wrap">
+      <table class="api">
+        <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/auth/register</code></td><td>—</td><td>Create an account, returns a session token.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/auth/login</code></td><td>—</td><td>Log in, returns a session token and tier.</td></tr>
+          <tr><td><span class="pill get">GET</span></td><td><code>/api/auth/me</code></td><td>Session</td><td>Profile: username, tier, expiry, linked Discord.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/auth/logout</code></td><td>Session</td><td>Invalidate the current token.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/auth/password</code></td><td>Session</td><td>Change password.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/obfuscate</code></td><td>Key / session</td><td>Obfuscate a script with your plan's limits.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/web-obfuscate</code></td><td>Session</td><td>Dashboard obfuscator (300k chars).</td></tr>
+          <tr><td><span class="pill get">GET</span></td><td><code>/api/web-history</code></td><td>Key / session</td><td>Recent dashboard squeezes.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/scripts</code></td><td>Key / session</td><td>Upload a script, get a short link.</td></tr>
+          <tr><td><span class="pill get">GET</span></td><td><code>/api/scripts</code></td><td>Key / session</td><td>List your uploaded scripts.</td></tr>
+          <tr><td><span class="pill del">DELETE</span></td><td><code>/api/scripts/&lt;slug&gt;</code></td><td>Key / session</td><td>Delete one of your links.</td></tr>
+          <tr><td><span class="pill get">GET</span></td><td><code>/s/&lt;slug&gt;</code></td><td>—</td><td>Raw Lua for a short link.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/keys</code></td><td>Session</td><td>Create an API key (shown once).</td></tr>
+          <tr><td><span class="pill get">GET</span></td><td><code>/api/keys</code></td><td>Session</td><td>List key prefixes and last use.</td></tr>
+          <tr><td><span class="pill del">DELETE</span></td><td><code>/api/keys/&lt;id&gt;</code></td><td>Session</td><td>Revoke a key.</td></tr>
+          <tr><td><span class="pill post">POST</span></td><td><code>/api/v2/obfuscate</code></td><td>Private key</td><td>No-quota private obfuscation, up to 1M chars.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="examples">Examples</h3>
+
+    <h4>Log in and read your profile</h4>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>auth.sh</span></div><pre>TOKEN=$(curl -s -X POST https://purrguy.pythonanywhere.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"you","password":"secret"}' | jq -r .token)
+
+curl -s https://purrguy.pythonanywhere.com/api/auth/me \
+  -H "Authorization: Bearer $TOKEN"
+# → {"ok":true,"username":"you","tier":"free","tier_expires":0,
+#    "discord_id":null,"discord_name":""}</pre></div>
+
+    <h4>Obfuscate with an API key</h4>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"source":"print(40 + 2)"}'
+# → {"ok":true,"seed":123,"output":"-- limevm v2 …","strings":1,
+#    "left_today":1,"unlimited":false}</pre></div>
+    <p class="note">A JSON body is always returned. <code>unlimited</code> is true for Lifetime accounts, which also report <code>left_today: -1</code>.</p>
+
+    <h4>Upload a script and get a short link</h4>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>upload.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/scripts \
+  -H "X-API-Key: lm_YOUR_KEY" -H "Content-Type: application/json" \
+  -d '{"source":"print(1)","title":"demo"}'
+# → {"ok":true,"slug":"AB12CD",
+#    "url":"https://lime.purrguy.me/s/AB12CD",
+#    "loadstring":"loadstring(game:HttpGet(\"…\"))()",
+#    "duplicate":false}</pre></div>
+
+    <h4>List, then delete a link</h4>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>manage.sh</span></div><pre>curl -s https://purrguy.pythonanywhere.com/api/scripts \
+  -H "X-API-Key: lm_YOUR_KEY"
+curl -s -X DELETE https://purrguy.pythonanywhere.com/api/scripts/AB12CD \
+  -H "X-API-Key: lm_YOUR_KEY"</pre></div>
+
+    <h4>Manage API keys</h4>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>keys.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/keys \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name":"my bot"}'
+# → {"ok":true,"id":"…","api_key":"lm_…"}   ← shown once
+
+curl -s -X DELETE https://purrguy.pythonanywhere.com/api/keys/KEY_ID \
+  -H "Authorization: Bearer $TOKEN"</pre></div>
+
+    <h3 id="private">Private API (v2)</h3>
+    <p>A dedicated endpoint for trusted integrations. One fixed Bearer key, no daily quota, up to <b>1,000,000 characters</b> per call. Requests are audited in a private Discord channel (string count, account, masked key, time, IP).</p>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>private.sh</span></div><pre># plain text in → plain text out
+curl -s -X POST https://lime.purrguy.me/api/v2/obfuscate \
+  -H "Authorization: Bearer $LIMEVM_API_KEY" \
+  --data-binary @script.lua -o out.lua
+
+# JSON body
+curl -s -X POST https://lime.purrguy.me/api/v2/obfuscate \
+  -H "Authorization: Bearer $LIMEVM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"source":"print(1)","seed":123}'
+# → {"ok":true,"seed":123,"output":"-- limevm v2 …","in_chars":8,
+#    "out_chars":…,"strings":1}</pre></div>
+    <p>Add <code>?raw=1</code> to force a plain-text response. CORS is open. Send the key in <code>Authorization: Bearer …</code>; anything else returns <code>401</code>.</p>
+
+    <h3 id="errors">Errors</h3>
+    <div class="table-wrap">
+      <table class="api">
+        <thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>400</td><td><code>bad-username</code>, <code>bad-password</code></td><td>Username 3–20 chars (<code>A-Z 0-9 _ -</code>) or password under 6 chars.</td></tr>
+          <tr><td>400</td><td><code>too-big</code>, <code>source-too-big</code></td><td>Input exceeds your plan's character cap.</td></tr>
+          <tr><td>401</td><td><code>unauthorized</code>, <code>bad-credentials</code></td><td>Missing/expired token, revoked key or wrong password.</td></tr>
+          <tr><td>404</td><td><code>unknown-script</code>, <code>unknown-user</code></td><td>Bad slug or account no longer exists.</td></tr>
+          <tr><td>409</td><td><code>taken</code></td><td>Username already registered.</td></tr>
+          <tr><td>429</td><td><code>daily-used</code>, <code>rate-limited</code></td><td>Quota reached (resets midnight UTC) or too many auth attempts.</td></tr>
+          <tr><td>500</td><td><code>internal</code></td><td>Engine failure — safe to retry once; report in Discord if it persists.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="run">Running hosted scripts</h3>
+    <p>Short links return raw Lua, so any executor can fetch and run them:</p>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre>loadstring(game:HttpGet("https://lime.purrguy.me/s/SLUG"))()</pre></div>
+    <p class="note">Fetching a link needs no authentication. Uploading, deleting and every obfuscation endpoint do.</p>
+
+    <p class="note">Need account plans, the app or the Discord bot? See the <a href="/docs/">general docs</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <div class="foot-grid">
+    <a href="/index.html">Home</a>
+    <a href="/docs/">Docs</a>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/download.html">Download</a>
+    <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
+    <a href="https://github.com/purrguy/LimeVM-App/releases" target="_blank" rel="noopener">Releases</a>
+  </div>
+  <p>lime.purrguy.me · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+</footer>
+</body>
+</html>

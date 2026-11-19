@@ -3,23 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="LimeVM dashboard — obfuscate Lua in your browser, history, and plans.">
+<meta name="description" content="LimeVM dashboard — obfuscate Lua in your browser, history, API keys and plans.">
+<meta name="theme-color" content="#070907">
 <title>LimeVM Dashboard</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
 <header class="nav">
-  <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
+  <div class="logo"><a href="/index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
   <span class="acct" id="dash-acct"></span>
+  <a class="btn ghost" href="/docs/">Docs</a>
   <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
 </header>
 
-<main id="dash-login" class="panel solo" hidden>
-  <h2>Dashboard login</h2>
+<main id="dash-login" class="panel solo login-shell" hidden>
+  <p><span class="eyebrow">Dashboard</span></p>
+  <h2>Welcome back</h2>
   <p class="center dim">Same account as the app. Free to make, takes ten seconds.</p>
-  <div class="modal" style="margin:26px auto;max-width:380px">
+  <div class="modal login-card">
     <h3 id="login-title">Log in</h3>
     <label>Username<input id="login-user" autocomplete="username" maxlength="20"></label>
     <label>Password<input id="login-pass" type="password" autocomplete="current-password"></label>
@@ -32,55 +35,109 @@
 </main>
 
 <main id="dash-app" class="dash" hidden>
-  <nav class="side" id="dash-tabs">
-    <button type="button" data-dtab="info" class="active">🍋 Info</button>
-    <button type="button" data-dtab="obfuscate">✨ Obfuscate</button>
-    <button type="button" data-dtab="history">🕘 History</button>
-    <button type="button" data-dtab="api">🔑 API</button>
-    <button type="button" data-dtab="pricing">💎 Pricing</button>
+  <aside class="side" id="dash-tabs">
+    <a class="side-brand" href="/index.html">
+      <span class="lime-dot"></span>
+      <span><b>LimeVM</b><small>control room</small></span>
+    </a>
+
+    <p class="side-label">Workspace</p>
+    <button type="button" data-dtab="info" class="active"><span class="si">◉</span> Overview</button>
+    <button type="button" data-dtab="obfuscate"><span class="si">✨</span> Obfuscator</button>
+    <button type="button" data-dtab="history"><span class="si">🕘</span> History</button>
+    <button type="button" data-dtab="api"><span class="si">🔑</span> API keys</button>
+    <p class="side-label">Account</p>
+    <button type="button" data-dtab="pricing"><span class="si">💎</span> Plans</button>
+    <a class="side-link" href="/docs/"><span class="si">📘</span> Docs</a>
+    <a class="side-link" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener"><span class="si">💬</span> Discord</a>
+
+    <div class="side-plan">
+      <span>Current plan</span>
+      <b id="dash-plan">free</b>
+      <small id="dash-plan-note">no expiry</small>
+    </div>
     <button type="button" id="dash-logout" class="ghostle">Log out</button>
-  </nav>
+  </aside>
 
   <div class="dash-main">
+    <header class="dash-top">
+      <div>
+        <p class="dash-crumb">Dashboard</p>
+        <h1 id="dash-title">Overview</h1>
+      </div>
+      <div class="dash-top-actions">
+        <span class="status-pill"><i></i> engine online</span>
+        <a class="btn small ghost" href="/api/docs/">API docs</a>
+      </div>
+    </header>
+
     <section class="dpanel" data-dpanel="info">
       <div class="info-hero"><span class="lime-dot big"></span>
-        <div><h2>LimeVM</h2><p class="dim" id="info-who">custom register-VM obfuscator for Lua &amp; Luau</p></div>
+        <div><h2>LimeVM</h2><p class="dim" id="info-who">Custom register-VM obfuscator for Lua &amp; Luau</p></div>
       </div>
       <p>Every build gets a fresh-shuffled ISA, encrypted constants and a flat dispatcher — no two outputs look alike. Your scripts run byte-identically, just unreadable.</p>
+
+      <div class="dash-grid">
+        <a class="dash-tile" href="#/obfuscate" data-jump="obfuscate">
+          <span class="dash-tile-ico">✨</span>
+          <b>New obfuscation</b>
+          <span>Paste Lua and squeeze it in the browser.</span>
+        </a>
+        <a class="dash-tile" href="#/history" data-jump="history">
+          <span class="dash-tile-ico">🕘</span>
+          <b>Recent runs</b>
+          <span>Every dashboard squeeze, newest first.</span>
+        </a>
+        <a class="dash-tile" href="#/api" data-jump="api">
+          <span class="dash-tile-ico">🔑</span>
+          <b>API keys</b>
+          <span>Automate uploads and obfuscation.</span>
+        </a>
+        <a class="dash-tile" href="#/pricing" data-jump="pricing">
+          <span class="dash-tile-ico">💎</span>
+          <b>Upgrade</b>
+          <span>From $4.99/week. Lifetime is unlimited.</span>
+        </a>
+      </div>
+
       <div class="cta-row left">
         <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join the Discord</a>
-        <a class="btn ghost" href="download.html">Get the app</a>
+        <a class="btn ghost" href="/download.html">Get the app</a>
       </div>
+
       <h3>Changelog</h3>
       <div class="log">
-        <div class="log-row"><b>v2.2</b><span class="dim">2026-11-19</span><p>New home at lime.purrguy.me, private API v2, unlimited Lifetime plan, glass UI refresh and engine fixes.</p></div>
+        <div class="log-row"><b>v2.2</b><span class="dim">2026-11-19</span><p>New home at lime.purrguy.me, private API v2, unlimited Lifetime plan, dashboard redesign and engine fixes.</p></div>
         <div class="log-row"><b>v2.1.0</b><span class="dim">2026-10-01</span><p>Compiler miscompile fixes, script short-links with in-app Upload, account subscriptions with expiry, and this dashboard obfuscator.</p></div>
         <div class="log-row"><b>v2.0.0</b><span class="dim">2026-09-26</span><p>Tabbed app, accounts + Discord login, live web demo, download page.</p></div>
       </div>
+
       <h3>Recent activity</h3>
       <div id="info-recent" class="dim">loading…</div>
     </section>
 
     <section class="dpanel" data-dpanel="obfuscate" hidden>
       <h2>Squeeze it</h2>
-      <p class="dim">Up to <b>300,000 chars</b>, <b>2 obfuscations per day</b>. The real engine, running on the server. Need a third? <a href="https://work.ink/28wp/limevm" target="_blank" rel="noopener">Do both Work.ink steps</a> for +1 today.</p>
+      <p class="dim">Up to <b>300,000 chars</b>, <b>2 obfuscations per day</b>. The real engine, running on the server. Need a third? <a href="https://work.ink/28wp/limevm" target="_blank" rel="noopener">Do both Work.ink steps</a> for +1 today. <b>Lifetime</b> has no daily cap.</p>
       <div class="demo-box wide">
         <textarea id="ob-in" spellcheck="false" placeholder="-- paste Lua / Luau here…"></textarea>
-        <div class="cta-row left">
+        <div class="editor-tools">
           <label class="btn ghost filebtn">Load .lua file<input type="file" id="ob-file" accept=".lua,.luau,.txt" hidden></label>
           <button type="button" class="btn ghost" id="ob-save">Save input</button>
-          <select id="ob-saved" class="btn ghost" style="min-width:160px;padding:8px 12px;font-size:13px"><option value="">Saved scripts...</option></select>
+          <select id="ob-saved" class="btn ghost"><option value="">Saved scripts…</option></select>
           <button type="button" class="btn ghost" id="ob-load">Load</button>
           <button type="button" class="btn ghost" id="ob-del">Delete</button>
           <span class="dim" id="ob-count">0 / 300000</span>
         </div>
-        <div class="dim" id="ob-saveinfo" style="font-size:12px;margin-top:4px"></div>
-        <button type="button" class="btn big" id="ob-btn">Obfuscate ✨</button>
+        <div class="dim" id="ob-saveinfo"></div>
+        <div class="editor-actions">
+          <button type="button" class="btn big" id="ob-btn">Obfuscate ✨</button>
+          <span class="dim" id="ob-left"></span>
+        </div>
         <pre id="ob-out">-- your zesty output lands here…</pre>
         <div class="cta-row left">
           <button type="button" class="btn" id="ob-dl" disabled>Download .lua</button>
           <button type="button" class="btn ghost" id="ob-up" disabled>Upload as link</button>
-          <span class="dim" id="ob-left"></span>
         </div>
         <div id="ob-link" hidden>
           <p class="dim">Short link (paste the loadstring in your executor):</p>
@@ -93,47 +150,74 @@
 
     <section class="dpanel" data-dpanel="history" hidden>
       <h2>History</h2>
-      <p class="dim">Your recent dashboard obfuscations (newest first).</p>
+      <p class="dim">Your recent dashboard obfuscations, newest first. Full history lives on the server — API keys share it.</p>
       <div id="hist-list" class="dim">loading…</div>
     </section>
 
     <section class="dpanel" data-dpanel="api" hidden>
       <h2>API keys</h2>
-      <p class="dim">Automate uploads and obfuscation. Keys share your account's quotas — same limits, no doubling. Full keys are shown <b>once</b>; only hashes are stored. Full reference: <a href="/docs/api/">docs/api</a>.</p>
+      <p class="dim">Automate uploads and obfuscation. Keys share your account's quotas — same limits, no doubling. Full keys are shown <b>once</b>; only hashes are stored. Full reference: <a href="/api/docs/">api docs</a>.</p>
       <div class="demo-box wide">
         <div class="cta-row left">
-          <input type="text" id="key-name" maxlength="40" placeholder="Key name (e.g. my bot)" style="flex:1;min-width:200px"/>
+          <input type="text" id="key-name" maxlength="40" placeholder="Key name (e.g. my bot)">
           <button type="button" class="btn" id="key-new">Create key</button>
         </div>
         <pre id="key-fresh" hidden></pre>
         <div id="key-list" class="dim">loading…</div>
       </div>
-      <h3>Docs</h3>
+      <h3>Quick start</h3>
       <p class="dim">Send the key as <code>Authorization: Bearer …</code> or <code>X-API-Key</code> header.</p>
       <pre id="api-doc1"></pre>
       <pre id="api-doc2"></pre>
     </section>
 
     <section class="dpanel" data-dpanel="pricing" hidden>
-      <h2>Pick your ripeness</h2>
-      <div class="cards">
-        <div class="card"><h3>Week</h3><div class="price">?</div><p>Full obfuscator for 7 days. App + dashboard + Discord perks.</p><a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
-        <div class="card"><h3>Month</h3><div class="price">?</div><p>Full obfuscator for 30 days. Best value for active developers.</p><a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
-        <div class="card"><h3>Year</h3><div class="price">?</div><p>Full obfuscator for a whole year. Set and forget.</p><a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
-        <div class="card hot"><div class="pop">BEST VALUE</div><h3>Lifetime</h3><div class="price">?</div><p>Pay once. Every future version, forever.</p>
-          <ul class="feature-list"><li><b>Unlimited</b> obfuscations, no daily cap</li><li>All presets, CLI and priority seeds</li><li>Never expires</li></ul>
-          <a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+      <h2>Pick a plan</h2>
+      <p class="dim">Every paid plan unlocks the full engine, the Windows app, the dashboard and Discord perks. Lifetime never expires and has no daily cap.</p>
+      <div class="cards plans">
+        <div class="card">
+          <h3>Week</h3><div class="price">$4.99</div>
+          <p>Full obfuscator for 7 days.</p>
+          <ul class="feature-list"><li>20 obfuscations / day</li><li>All presets</li><li>Discord perks</li></ul>
+          <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+        </div>
+        <div class="card">
+          <h3>Month</h3><div class="price">$9.99</div>
+          <p>Full obfuscator for 30 days. Best for active projects.</p>
+          <ul class="feature-list"><li>20 obfuscations / day</li><li>All presets</li><li>Discord perks</li></ul>
+          <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+        </div>
+        <div class="card">
+          <h3>Year</h3><div class="price">$21.99</div>
+          <p>Full obfuscator for 365 days. Set and forget.</p>
+          <ul class="feature-list"><li>20 obfuscations / day</li><li>All presets + CLI</li><li>Priority seeds</li></ul>
+          <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+        </div>
+        <div class="card hot">
+          <div class="pop">BEST VALUE</div>
+          <h3>Lifetime</h3><div class="price">$38.99</div>
+          <p>Pay once. Every future LimeVM version, forever.</p>
+          <ul class="feature-list"><li><b>Unlimited</b> obfuscations — no daily cap</li><li>Every future version included</li><li>All presets, CLI and priority seeds</li><li>Never expires</li></ul>
+          <a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+        </div>
       </div>
-      <p class="note">To buy: join the <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord server</a> and open a ticket — staff activate your account. Lifetime has no daily obfuscation limit.</p>
+      <p class="note">To buy: join the <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord server</a> and open a ticket. Staff activate the plan on your linked account.</p>
     </section>
   </div>
 </main>
 
 <footer>
   <div class="logo"><span class="lime-dot"></span> LimeVM</div>
-  <p><a href="index.html">← back home</a> · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+  <div class="foot-grid">
+    <a href="/index.html">Home</a>
+    <a href="/docs/">Docs</a>
+    <a href="/api/docs/">API</a>
+    <a href="/download.html">Download</a>
+    <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
+  </div>
+  <p>lime.purrguy.me · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
 </footer>
 
-<script src="dashboard.js"></script>
+<script src="/dashboard.js"></script>
 </body>
 </html>

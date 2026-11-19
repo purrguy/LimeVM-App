@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LimeVM documentation — accounts, plans, the app, the dashboard, script links and the Discord bot.">
+<meta name="theme-color" content="#070907">
+<link rel="canonical" href="https://lime.purrguy.me/docs/">
+<title>LimeVM Docs</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="nav">
+  <div class="logo"><a href="/index.html" style="color:inherit;text-decoration:none"><span class="lime-dot"></span> LimeVM</a></div>
+  <nav><a href="/index.html#/features">Features</a><a href="/index.html#/pricing">Pricing</a><a href="/api/docs/">API</a></nav>
+  <a class="btn ghost" href="/dashboard.html">Dashboard</a>
+  <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
+</header>
+
+<section class="panel solo">
+  <p class="center"><span class="eyebrow">Documentation</span></p>
+  <h2>LimeVM, explained</h2>
+  <p class="center dim">Everything you need to go from a fresh account to an obfuscated script — app, dashboard, links and plans.</p>
+
+  <div class="doc-nav">
+    <a href="#start">Getting started</a>
+    <a href="#plans">Plans</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#app">Desktop app</a>
+    <a href="#links">Script links</a>
+    <a href="#discord">Discord bot</a>
+    <a href="#api">API</a>
+    <a href="#trouble">Troubleshooting</a>
+  </div>
+
+  <div class="prose">
+
+    <h3 id="start">Getting started</h3>
+    <ol>
+      <li><b>Make an account.</b> Use the <b>Log in</b> button on the homepage or register inside the app. Username is 3–20 characters (letters, numbers, <code>_</code>, <code>-</code>); password is 6+ characters.</li>
+      <li><b>Log in.</b> The same account works on the website dashboard, the Windows app and the HTTP API.</li>
+      <li><b>Obfuscate.</b> Paste Lua/Luau in the <a href="/dashboard.html">dashboard</a>, use the <a href="/download.html">Windows app</a>, or call the API.</li>
+      <li><b>Run the output</b> exactly like the original script. Behaviour is expected to be identical.</li>
+    </ol>
+    <p>Free accounts can obfuscate scripts up to <b>3,000 characters</b> and use the dashboard obfuscator <b>2 times per day</b> (up to 300,000 characters). Paid plans raise these limits.</p>
+
+    <h3 id="plans">Plans and pricing</h3>
+    <div class="table-wrap">
+      <table class="api">
+        <thead><tr><th>Plan</th><th>Price</th><th>Length</th><th>What you get</th></tr></thead>
+        <tbody>
+          <tr><td><b>Week</b></td><td>$4.99</td><td>7 days</td><td>Full engine, app + dashboard, 20 obfuscations/day, Discord perks.</td></tr>
+          <tr><td><b>Month</b></td><td>$9.99</td><td>30 days</td><td>Same as Week, best for active projects.</td></tr>
+          <tr><td><b>Year</b></td><td>$21.99</td><td>365 days</td><td>Same as Month, plus CLI access and priority seeds.</td></tr>
+          <tr><td><b>Lifetime</b></td><td>$38.99</td><td>Never expires</td><td><b>Unlimited</b> obfuscations — no daily cap — every future version, all presets, CLI and priority seeds.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>Buying:</b> join the <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord server</a> and open a ticket. Staff activate the plan on your account; there is no automatic checkout yet.</p>
+    <p>Plans apply to your LimeVM account, so make sure Discord is linked (app → <b>Account → Link Discord</b>, or <code>/link</code> in Discord) before you buy. Expired paid plans fall back to Free automatically; Lifetime never expires and never drops to a daily limit.</p>
+
+    <h3 id="dashboard">Using the dashboard</h3>
+    <p>The dashboard is the fastest way to obfuscate without installing anything. Tabs:</p>
+    <ul>
+      <li><b>Overview</b> — account status, plan, recent activity and changelog.</li>
+      <li><b>Obfuscator</b> — paste or load a <code>.lua</code>/<code>.luau</code> file, then hit <b>Obfuscate</b>. You can save inputs locally, download the result, or upload it as a short link. A normal squeeze is a few seconds.</li>
+      <li><b>History</b> — your recent squeezes with input/output size, seed and tier.</li>
+      <li><b>API keys</b> — create keys for scripts and bots. The full key is shown <b>once</b>; only a hash is stored. Revoke a key at any time.</li>
+      <li><b>Plans</b> — current pricing and what each tier unlocks.</li>
+    </ul>
+
+    <h3 id="app">Desktop app</h3>
+    <p>The Windows app is a single executable (~13 MB), no installer. It includes the same engine, local script history, themes and Discord login.</p>
+    <ul>
+      <li>Download from the <a href="/download.html">download page</a> or the Discord server.</li>
+      <li>Obfuscation works offline; license checks tolerate up to 14 days without internet.</li>
+      <li>Updates are announced in Discord and on the changelog.</li>
+    </ul>
+
+    <h3 id="links">Script links</h3>
+    <p>Upload any script and LimeVM returns a short URL such as <code>https://lime.purrguy.me/s/AB12CD</code>. Run it in an executor with:</p>
+    <div class="win"><div class="bar"><i></i><i></i><i></i><span>loadstring</span></div><pre>loadstring(game:HttpGet("https://lime.purrguy.me/s/AB12CD"))()</pre></div>
+    <ul>
+      <li>Free accounts: 3 uploads/day, links expire after 5 days.</li>
+      <li>Paid accounts: 20 uploads/day, links never expire.</li>
+      <li>Uploading the same script twice returns the existing link instead of a duplicate.</li>
+    </ul>
+
+    <h3 id="discord">Discord bot</h3>
+    <div class="table-wrap">
+      <table class="api">
+        <thead><tr><th>Command</th><th>Who</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/obfuscate</code></td><td>Everyone</td><td>One free obfuscation per day, up to 3,000 characters. Attach a file or paste code.</td></tr>
+          <tr><td><code>/daily</code></td><td>Everyone</td><td>Shows your remaining free daily obfuscation.</td></tr>
+          <tr><td><code>/link</code></td><td>Everyone</td><td>Links Discord to your LimeVM account with the 6-letter code from the app.</td></tr>
+          <tr><td><code>/grant</code></td><td>Owner only</td><td>Applies Week, Month, Year or Lifetime to a linked Discord user.</td></tr>
+          <tr><td><code>/activate</code>, <code>/sub</code>, <code>/revoke</code>, <code>/reset-hwid</code></td><td>Admins</td><td>License management for offline / device-bound setups.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The <code>/grant</code> command is restricted to the server owner's Discord account. It refuses to run for anyone else, including administrators.</p>
+
+    <h3 id="api">HTTP API</h3>
+    <p>Automate obfuscation and uploads with a session token or API key. There is also a private, no-quota endpoint for trusted integrations.</p>
+    <p><a class="btn ghost" href="/api/docs/">Open the API reference →</a></p>
+
+    <h3 id="trouble">Troubleshooting</h3>
+    <div class="doc-grid">
+      <div class="doc-card">
+        <h3>“unauthorized” / logged out</h3>
+        <p>Sessions last 30 days and are invalidated on logout. Log in again. API keys can be revoked in the dashboard; create a fresh one if a key stops working.</p>
+      </div>
+      <div class="doc-card">
+        <h3>“daily-used”</h3>
+        <p>You hit the daily quota. Quotas reset at midnight UTC. Lifetime accounts have no daily cap.</p>
+      </div>
+      <div class="doc-card">
+        <h3>“too-big”</h3>
+        <p>Free tier caps at 3,000 characters. The dashboard accepts up to 300,000; the private API accepts up to 1,000,000.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Obfuscated script errors</h3>
+        <p>First run the original in the same executor. If the original works and the output does not, report it in Discord with both versions and the seed from History.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Plan not showing</h3>
+        <p>The plan is attached to your LimeVM account. Make sure Discord is linked, then reload the dashboard or the app. Staff can check the account in a ticket.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Large scripts</h3>
+        <p>Huge inputs take longer and produce larger output (roughly 4–5× the source). The engine handles 200 KB+ Luau scripts; use the private API for the biggest jobs.</p>
+      </div>
+    </div>
+
+    <p class="note">Still stuck? Ask in the <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord server</a> — include the error text, input size and seed.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="lime-dot"></span> LimeVM</div>
+  <div class="foot-grid">
+    <a href="/index.html">Home</a>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/api/docs/">API reference</a>
+    <a href="/download.html">Download</a>
+    <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
+    <a href="https://github.com/purrguy/LimeVM-App/releases" target="_blank" rel="noopener">Releases</a>
+  </div>
+  <p>lime.purrguy.me · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+</footer>
+</body>
+</html>

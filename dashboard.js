@@ -110,6 +110,7 @@ window.addEventListener('load', function () {
       loginPass.value = '';
       sessionValid = true;
       showApp();
+      checkSession(function () {});
     }, function (e) {
       loginErr.textContent = FRIENDLY[e.code] || ('Failed: ' + e.code);
     }).then(function () { loginGo.disabled = false; });
@@ -140,15 +141,35 @@ window.addEventListener('load', function () {
     api('GET', '/api/auth/me', undefined, session.token).then(function (me) {
       session.username = me.username;
       session.tier = me.tier;
+      session.tier_expires = me.tier_expires || 0;
       sessionValid = true;
       saveSession(session);
+      renderAcct();
       then(true);
     }, function () { lockSession(); });
   }
 
-  // ---------- header account ----------
+  // ---------- header account + plan card ----------
+  var PLAN_NAMES = { free: 'Free', week: 'Week pass', month: 'Month pass',
+                     year: 'Year pass', basic: 'Basic', pro: 'Pro',
+                     lifetime: 'Lifetime' };
+  function renderPlan() {
+    var el = document.getElementById('dash-plan');
+    var note = document.getElementById('dash-plan-note');
+    if (!el) return;
+    var tier = (session && session.tier) || 'free';
+    el.textContent = PLAN_NAMES[tier] || tier;
+    var exp = Number((session && session.tier_expires) || 0);
+    if (note) {
+      note.textContent = tier === 'lifetime'
+        ? 'unlimited · never expires'
+        : (exp ? 'expires ' + new Date(exp * 1000).toLocaleDateString()
+               : (tier === 'free' ? 'upgrade from $4.99' : 'no expiry set'));
+    }
+  }
   var acctArea = document.getElementById('dash-acct');
   function renderAcct() {
+    renderPlan();
     acctArea.innerHTML = '';
     var who = document.createElement('span');
     who.className = 'who';
@@ -173,9 +194,14 @@ window.addEventListener('load', function () {
   // ---------- left tabs ----------
   var tabBtns = Array.prototype.slice.call(document.querySelectorAll('#dash-tabs [data-dtab]'));
   var panels = Array.prototype.slice.call(document.querySelectorAll('.dpanel[data-dpanel]'));
+  var TAB_TITLES = { info: 'Overview', obfuscate: 'Obfuscator',
+                     history: 'History', api: 'API keys', pricing: 'Plans' };
   function showDTabNow(name) {
     tabBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-dtab') === name); });
     panels.forEach(function (p) { p.hidden = p.getAttribute('data-dpanel') !== name; });
+    var title = document.getElementById('dash-title');
+    if (title) title.textContent = TAB_TITLES[name] || 'Dashboard';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function showDTab(name) {
     // data tabs always revalidate: a stale/expired token locks instantly,
@@ -190,6 +216,13 @@ window.addEventListener('load', function () {
   tabBtns.forEach(function (b) {
     b.addEventListener('click', function () { showDTab(b.getAttribute('data-dtab')); });
   });
+  Array.prototype.slice.call(document.querySelectorAll('[data-jump]'))
+    .forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        showDTab(a.getAttribute('data-jump'));
+      });
+    });
 
   // ---------- history (info recent + history tab) ----------
   function histRow(h) {
@@ -530,6 +563,7 @@ window.addEventListener('load', function () {
       saveSession(session);
       sessionValid = true;
       showApp();
+      checkSession(function () {});
     }, function () {
       lockSession();
     });

@@ -19,6 +19,7 @@
 <header class="nav">
   <div class="logo"><span class="lime-dot"></span> LimeVM</div>
   <span class="acct" id="acct-area"><button type="button" class="btn small" id="acct-btn">Log in</button></span>
+  <a class="btn ghost" href="/docs/">Docs</a>
   <a class="btn ghost" href="dashboard.html">Dashboard</a>
   <a class="btn discord" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Join Discord</a>
 </header>
@@ -101,30 +102,40 @@
 <section class="panel" data-panel="pricing" hidden>
   <p class="center"><span class="eyebrow">Pricing</span></p>
   <h2>Pick your ripeness</h2>
-  <div class="cards">
+  <div class="cards plans">
     <div class="card reveal">
-      <h3>Basic</h3><div class="price">?</div>
-      <p>Core VM obfuscator, GUI app and community support.</p>
+      <h3>Week</h3><div class="price">$4.99</div>
+      <p>Full obfuscator for 7 days.</p>
       <ul class="feature-list">
-        <li>Full metamorphic engine</li>
         <li>20 obfuscations / day</li>
-        <li>Windows app + dashboard</li>
+        <li>All presets, app + dashboard</li>
+        <li>Discord perks</li>
       </ul>
       <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
     </div>
     <div class="card reveal">
-      <h3>Pro</h3><div class="price">?</div>
-      <p>Everything in Basic, plus the power-user tools.</p>
+      <h3>Month</h3><div class="price">$9.99</div>
+      <p>Full obfuscator for 30 days. Best for active projects.</p>
       <ul class="feature-list">
-        <li>Max-strength presets</li>
-        <li>CLI + priority seeds</li>
-        <li>Priority support</li>
+        <li>20 obfuscations / day</li>
+        <li>All presets, app + dashboard</li>
+        <li>Discord perks</li>
+      </ul>
+      <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+    </div>
+    <div class="card reveal">
+      <h3>Year</h3><div class="price">$21.99</div>
+      <p>Full obfuscator for 365 days. Set and forget.</p>
+      <ul class="feature-list">
+        <li>20 obfuscations / day</li>
+        <li>All presets + CLI</li>
+        <li>Priority seeds</li>
       </ul>
       <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
     </div>
     <div class="card hot reveal">
       <div class="pop">BEST VALUE</div>
-      <h3>Lifetime</h3><div class="price">?</div>
+      <h3>Lifetime</h3><div class="price">$38.99</div>
       <p>Pay once. Every future LimeVM version, forever.</p>
       <ul class="feature-list">
         <li><b>Unlimited</b> obfuscations — no daily cap</li>
@@ -135,18 +146,18 @@
       <a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
     </div>
   </div>
-  <p class="note">Prices set on Discord for now — online checkout (maybe FunPay) comes later. Lifetime never resets to a daily limit.</p>
+  <p class="note">Buy in Discord — open a ticket and staff activate the plan on your linked account. Lifetime never resets to a daily limit.</p>
 </section>
 
 <section class="panel" data-panel="api" hidden>
   <p class="center"><span class="eyebrow">Developers</span></p>
   <h2>API</h2>
-  <p class="center dim">Automate uploads and obfuscation. Auth: <code>Authorization: Bearer &lt;session token&gt;</code> from login. Quotas reset midnight UTC. Full reference: <a href="/docs/api/">docs/api</a>.</p>
+  <p class="center dim">Automate uploads and obfuscation. Auth: <code>Authorization: Bearer &lt;session token&gt;</code> from login. Quotas reset midnight UTC. Full reference: <a href="/api/docs/">api docs</a>.</p>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>upload.sh</span></div><pre id="api-doc1"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre id="api-doc2"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre id="api-doc3"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>private-api.sh</span></div><pre id="api-doc4"></pre></div>
-  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day (unlimited on Lifetime).<br><b>Private API</b> <code>POST /api/v2/obfuscate</code>: Bearer key, no daily quota, up to 1M chars, raw or JSON body.</p>
+  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day (unlimited on Lifetime).<br><b>Private API</b> <code>POST /api/v2/obfuscate</code>: Bearer key, no daily quota, up to 1M chars, raw or JSON body. <a href="/api/docs/">Full reference →</a></p>
 </section>
 
 <section class="panel" data-panel="faq" hidden>
@@ -167,6 +178,8 @@
   <div class="logo"><span class="lime-dot"></span> LimeVM</div>
   <div class="foot-grid">
     <a href="dashboard.html">Dashboard</a>
+    <a href="/docs/">Docs</a>
+    <a href="/api/docs/">API</a>
     <a href="download.html">Download</a>
     <a href="index.html#/pricing">Pricing</a>
     <a href="index.html#/faq">FAQ</a>
