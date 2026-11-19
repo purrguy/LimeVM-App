@@ -403,7 +403,9 @@ window.addEventListener('load', function () {
         : r.output;
       obOut.textContent = shown;
       obDl.disabled = false;
-      obLeft.textContent = (r.left_today > 0
+      obLeft.textContent = (r.unlimited
+        ? 'unlimited squeezes on your plan'
+        : r.left_today > 0
         ? r.left_today + ' squeeze' + (r.left_today === 1 ? '' : 's') + ' left today'
         : 'all used — back tomorrow')
         + (r.bonus ? ' (+1 Work.ink bonus 🎁)' : '');

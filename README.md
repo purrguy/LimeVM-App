@@ -2,7 +2,7 @@
 
 Downloads + website for **LimeVM**, a custom register-VM obfuscator for
 Lua/Luau. Served live at
-[https://lime.greedyhudzell.xyz](https://lime.greedyhudzell.xyz).
+[https://lime.purrguy.me](https://lime.purrguy.me).
 
 - Latest exe: [Releases](../../releases) (`LimeVM.exe`, no install)
 - Verify: `version.json` carries the SHA-256 of the current build

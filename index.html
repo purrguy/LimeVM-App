@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="LimeVM — a custom register-VM obfuscator for Lua and Luau. Fresh-shuffled ISA, encrypted constants and a flat dispatcher in every build.">
+<meta name="theme-color" content="#070907">
+<meta property="og:title" content="LimeVM — Lua obfuscator with bite">
+<meta property="og:description" content="Register-VM obfuscation for Lua and Luau: per-build metamorphic ISA, encrypted constants, integrity tripwires.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lime.purrguy.me/">
+<link rel="canonical" href="https://lime.purrguy.me/">
 <title>LimeVM — Lua obfuscator with bite</title>
 <link rel="stylesheet" href="/style.css">
 </head>
@@ -21,6 +27,7 @@
   <div class="hero-lime" aria-hidden="true">
     <div class="slice"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   </div>
+  <p><span class="eyebrow">Register-VM · Lua &amp; Luau</span></p>
   <h1>Squeeze your Lua <span class="hl">dry.</span></h1>
   <p class="sub">LimeVM is a custom register-VM obfuscator for Lua &amp; Luau.
      Every build gets a fresh-shuffled ISA, encrypted constants and a flat
@@ -29,11 +36,17 @@
     <a class="btn big" href="#/download">Get LimeVM</a>
     <a class="btn ghost" href="dashboard.html">Open dashboard</a>
   </div>
-  <p class="verline"><code>v2.1.0</code> <span class="dim">— script links, dashboard obfuscator, fixed engine</span></p>
+  <p class="verline"><code>v2.1.0</code> <span class="dim">— script links, dashboard obfuscator, hardened engine</span></p>
   <div class="badges">
     <span>byte-identical differential tests</span>
     <span>per-build metamorphic VM</span>
     <span>140+ real scripts verified</span>
+  </div>
+  <div class="stats reveal">
+    <div class="stat"><b>28/28</b><span>differential tests</span></div>
+    <div class="stat"><b>140+</b><span>real scripts</span></div>
+    <div class="stat"><b>0</b><span>plaintext leftovers</span></div>
+    <div class="stat"><b>∞</b><span>Lifetime squeezes</span></div>
   </div>
 </section>
 
@@ -55,9 +68,14 @@
   <p class="center"><span class="eyebrow">Why LimeVM</span></p>
   <h2>Why it's sour for reversers</h2>
   <div class="cards">
-    <div class="card"><div class="emoji">🎲</div><h3>Metamorphic VM</h3><p>Opcode numbers, operand biases, handler spellings and dispatcher shape are re-rolled from your seed. Signature tools starve.</p></div>
-    <div class="card"><div class="emoji">🔒</div><h3>Encrypted everything</h3><p>Strings, numbers and globals live as rotate+xor ciphertext, split into chunks. The decoder key stream never repeats.</p></div>
-    <div class="card"><div class="emoji">🪤</div><h3>Integrity tripwires</h3><p>Every proto carries a checksum. Patch one byte and the program refuses to run instead of computing garbage.</p></div>
+    <div class="card reveal"><div class="emoji">🎲</div><h3>Metamorphic VM</h3><p>Opcode numbers, operand biases, handler spellings and dispatcher shape are re-rolled from your seed. Signature tools starve.</p></div>
+    <div class="card reveal"><div class="emoji">🔒</div><h3>Encrypted everything</h3><p>Strings, numbers and globals live as rotate+xor ciphertext, split into chunks. The decoder key stream never repeats.</p></div>
+    <div class="card reveal"><div class="emoji">🪤</div><h3>Integrity tripwires</h3><p>Every proto carries a checksum. Patch one byte and the program refuses to run instead of computing garbage.</p></div>
+  </div>
+  <div class="cards">
+    <div class="card reveal"><div class="emoji">⚡</div><h3>Byte-identical output</h3><p>Original and obfuscated scripts are diffed on a 28-case corpus. Same stdout, same side effects, same errors.</p></div>
+    <div class="card reveal"><div class="emoji">🧬</div><h3>No two builds alike</h3><p>Runtime identifiers are randomised per build, so string scans and signature databases have nothing stable to anchor on.</p></div>
+    <div class="card reveal"><div class="emoji">🛡️</div><h3>Quiet fail-safe</h3><p>Dump tooling gets a neutral failure instead of a payload. No banners, no taunts, nothing worth screenshotting.</p></div>
   </div>
 </section>
 
@@ -65,7 +83,7 @@
   <p class="center"><span class="eyebrow">Download</span></p>
   <h2>Grab the app</h2>
   <p class="center dim">Windows GUI: dashboard, history, themes, Discord login. Free accounts obfuscate up to 3000 chars per script. No install — download and run.</p>
-  <div class="dl-card">
+  <div class="dl-card reveal">
     <div class="dl-ver" id="dl-ver">LimeVM v2.1.0</div>
     <div class="cta-row">
       <a class="btn big" id="dl-btn" href="download.html">Download page</a>
@@ -74,9 +92,9 @@
     <p class="note">Windows 10/11 · ~13MB single file · <span id="dl-sha">sha256 on the download page</span></p>
   </div>
   <div class="steps">
-    <div class="card"><h3>1. Download</h3><p>Grab the exe from GitHub or Discord. One file, nothing to install.</p></div>
-    <div class="card"><h3>2. Make an account</h3><p>Register in the app (or up top on this site) — even free runs need one.</p></div>
-    <div class="card"><h3>3. Squeeze</h3><p>Paste Lua, hit Obfuscate. Paid tiers unlock unlimited size + presets.</p></div>
+    <div class="card reveal"><h3>1. Download</h3><p>Grab the exe from GitHub or Discord. One file, nothing to install.</p></div>
+    <div class="card reveal"><h3>2. Make an account</h3><p>Register in the app (or up top on this site) — even free runs need one.</p></div>
+    <div class="card reveal"><h3>3. Squeeze</h3><p>Paste Lua, hit Obfuscate. Lifetime unlocks unlimited size and unlimited runs.</p></div>
   </div>
 </section>
 
@@ -84,11 +102,40 @@
   <p class="center"><span class="eyebrow">Pricing</span></p>
   <h2>Pick your ripeness</h2>
   <div class="cards">
-    <div class="card"><h3>Basic</h3><div class="price">?</div><p>Core VM obfuscator, GUI app, community support on Discord.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
-    <div class="card hot"><div class="pop">MOST SQUEEZED</div><h3>Pro</h3><div class="price">?</div><p>Everything in Basic, plus max-strength presets, CLI, priority seeds and updates.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
-    <div class="card"><h3>Lifetime</h3><div class="price">?</div><p>Pay once. Every future LimeVM version, forever. Never expires.</p><a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a></div>
+    <div class="card reveal">
+      <h3>Basic</h3><div class="price">?</div>
+      <p>Core VM obfuscator, GUI app and community support.</p>
+      <ul class="feature-list">
+        <li>Full metamorphic engine</li>
+        <li>20 obfuscations / day</li>
+        <li>Windows app + dashboard</li>
+      </ul>
+      <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+    </div>
+    <div class="card reveal">
+      <h3>Pro</h3><div class="price">?</div>
+      <p>Everything in Basic, plus the power-user tools.</p>
+      <ul class="feature-list">
+        <li>Max-strength presets</li>
+        <li>CLI + priority seeds</li>
+        <li>Priority support</li>
+      </ul>
+      <a class="btn ghost" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+    </div>
+    <div class="card hot reveal">
+      <div class="pop">BEST VALUE</div>
+      <h3>Lifetime</h3><div class="price">?</div>
+      <p>Pay once. Every future LimeVM version, forever.</p>
+      <ul class="feature-list">
+        <li><b>Unlimited</b> obfuscations — no daily cap</li>
+        <li>Every future version included</li>
+        <li>All presets, CLI and priority seeds</li>
+        <li>Never expires</li>
+      </ul>
+      <a class="btn" href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Buy on Discord</a>
+    </div>
   </div>
-  <p class="note">Prices set on Discord for now — online checkout (maybe FunPay) comes later.</p>
+  <p class="note">Prices set on Discord for now — online checkout (maybe FunPay) comes later. Lifetime never resets to a daily limit.</p>
 </section>
 
 <section class="panel" data-panel="api" hidden>
@@ -99,17 +146,20 @@
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre id="api-doc2"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre id="api-doc3"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>private-api.sh</span></div><pre id="api-doc4"></pre></div>
-  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day.<br><b>Private API</b> <code>POST /api/v2/obfuscate</code>: Bearer key, no daily quota, up to 1M chars, raw or JSON body.</p>
+  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day (unlimited on Lifetime).<br><b>Private API</b> <code>POST /api/v2/obfuscate</code>: Bearer key, no daily quota, up to 1M chars, raw or JSON body.</p>
 </section>
 
 <section class="panel" data-panel="faq" hidden>
   <p class="center"><span class="eyebrow">FAQ</span></p>
   <h2>Sour questions</h2>
-  <details><summary>Will my script still run exactly the same?</summary><p>Yes. Every release passes 28 differential test cases (original vs obfuscated, byte-identical stdout) plus 140+ real-world scripts.</p></details>
-  <details><summary>Can anyone reverse it?</summary><p>Honest answer: a determined expert with dynamic analysis can eventually lift any client-side VM. LimeVM's job is making that cost weeks instead of minutes — fresh ISA per build, encrypted constants, tripwires.</p></details>
-  <details><summary>How do accounts and activation work?</summary><p>Make a free account here or in the app (username + password, Discord linking supported). Buy a tier on Discord and staff activate you — your app and site both unlock. License files still work for offline-first setups.</p></details>
-  <details><summary>Does it work offline?</summary><p>Yes. Licenses verify offline for 14 days between check-ins; obfuscation itself never needs the internet.</p></details>
-  <details><summary>Is there really a free Discord obfuscator?</summary><p>Yes — <b>/obfuscate</b> in the Discord server, once per day, up to 3000 chars. Same engine, nerfed demo preset.</p></details>
+  <div class="faq">
+    <details><summary>Will my script still run exactly the same?</summary><p>Yes. Every release passes 28 differential test cases (original vs obfuscated, byte-identical stdout) plus 140+ real-world scripts.</p></details>
+    <details><summary>Can anyone reverse it?</summary><p>Honest answer: a determined expert with dynamic analysis can eventually lift any client-side VM. LimeVM's job is making that cost weeks instead of minutes — fresh ISA per build, encrypted constants, tripwires.</p></details>
+    <details><summary>How do accounts and activation work?</summary><p>Make a free account here or in the app (username + password, Discord linking supported). Buy a tier on Discord and staff activate you — your app and site both unlock. License files still work for offline-first setups.</p></details>
+    <details><summary>What does Lifetime actually include?</summary><p>Unlimited obfuscations with no daily cap, every future LimeVM version, all presets, CLI access and priority seeds. It never expires and never drops back to a daily limit.</p></details>
+    <details><summary>Does it work offline?</summary><p>Yes. Licenses verify offline for 14 days between check-ins; obfuscation itself never needs the internet.</p></details>
+    <details><summary>Is there really a free Discord obfuscator?</summary><p>Yes — <b>/obfuscate</b> in the Discord server, once per day, up to 3000 chars. Same engine, nerfed demo preset.</p></details>
+  </div>
 </section>
 </main>
 
@@ -123,7 +173,7 @@
     <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
     <a href="https://github.com/purrguy/LimeVM-App/releases" target="_blank" rel="noopener">Releases</a>
   </div>
-  <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+  <p>lime.purrguy.me · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
 </footer>
 
 <div class="modal-back" id="auth-modal" hidden>

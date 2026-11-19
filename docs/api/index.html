@@ -33,7 +33,7 @@ curl -s -X POST https://purrguy.pythonanywhere.com/api/auth/login \
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>upload.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/scripts \
   -H "X-API-Key: lm_YOUR_KEY" -H "Content-Type: application/json" \
   -d '{"source":"print(1)","title":"demo"}'
-# → {"ok":true,"slug":"AB12CD","url":"https://lime.greedyhudzell.xyz/s/AB12CD",
+# → {"ok":true,"slug":"AB12CD","url":"https://lime.purrguy.me/s/AB12CD",
 #    "loadstring":"loadstring(game:HttpGet(\"…\"))()","duplicate":false,…}</pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>manage.sh</span></div><pre>curl -s https://purrguy.pythonanywhere.com/api/scripts -H "X-API-Key: lm_YOUR_KEY"
 curl -s -X DELETE https://purrguy.pythonanywhere.com/api/scripts/AB12CD -H "X-API-Key: lm_YOUR_KEY"</pre></div>
@@ -44,15 +44,15 @@ curl -s -X DELETE https://purrguy.pythonanywhere.com/api/scripts/AB12CD -H "X-AP
   -H "Content-Type: application/json" \
   -d '{"source":"print(40 + 2)","account_token":"LOGIN_TOKEN"}'
 # → {"ok":true,"seed":123,"output":"-- limevm v2 …","left_today":1,…}</pre></div>
-  <p class="note">Dashboard obfuscator: 300k chars max, 2/day (+1 with both Work.ink steps done). Same endpoint powers the dashboard tab.</p>
+  <p class="note">Dashboard obfuscator: 300k chars max, 2/day (+1 with both Work.ink steps done). Same endpoint powers the dashboard tab. <b>Lifetime accounts are unlimited</b> — no daily cap applies.</p>
 
   <h2 class="gap">Private API (v2)</h2>
-  <div class="win"><div class="bar"><i></i><i></i><i></i><span>private.sh</span></div><pre>curl -s -X POST https://lime.greedyhudzell.xyz/api/v2/obfuscate \
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>private.sh</span></div><pre>curl -s -X POST https://lime.purrguy.me/api/v2/obfuscate \
   -H "Authorization: Bearer $LIMEVM_API_KEY" \
   --data-binary @script.lua -o out.lua
 
 # JSON body instead of raw text:
-curl -s -X POST https://lime.greedyhudzell.xyz/api/v2/obfuscate \
+curl -s -X POST https://lime.purrguy.me/api/v2/obfuscate \
   -H "Authorization: Bearer $LIMEVM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"source":"print(1)","seed":123,"raw":true}'
@@ -72,7 +72,7 @@ curl -s -X DELETE https://purrguy.pythonanywhere.com/api/keys/KEY_ID -H "Authori
 
   <h2 class="gap">Fetch in executors</h2>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre>-- run any hosted script (no auth needed to fetch):
-loadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()</pre></div>
+loadstring(game:HttpGet("https://lime.purrguy.me/s/SLUG"))()</pre></div>
 
   <h2 class="gap">Errors</h2>
   <div class="card">
@@ -90,7 +90,7 @@ loadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()</pre></div>
     <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">Discord</a>
     <a href="https://github.com/purrguy/LimeVM-App/releases" target="_blank" rel="noopener">Releases</a>
   </div>
-  <p>lime.greedyhudzell.xyz · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
+  <p>lime.purrguy.me · <a href="https://discord.gg/rz6ZtCajSW" target="_blank" rel="noopener">discord.gg/rz6ZtCajSW</a></p>
 </footer>
 </body>
 </html>

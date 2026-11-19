@@ -64,13 +64,29 @@ window.addEventListener('load', function () {
   window.addEventListener('resize', syncNavHeight);
   window.addEventListener('orientationchange', syncNavHeight);
 
+  // ---------- reveal on scroll ----------
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
   // ---------- tab router (#/pricing, …) ----------
   var TABS = ['features', 'download', 'pricing', 'api', 'faq'];
   var API_DOCS = [
     ['api-doc1', 'TOKEN=$(curl -s -X POST https://purrguy.pythonanywhere.com/api/auth/login -H "Content-Type: application/json" -d \'{"username":"you","password":"secret"}\' | grep -o \'"token":"[^"]*"\' | cut -d\\" -f4)\n\ncurl -s -X POST https://purrguy.pythonanywhere.com/api/scripts -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d \'{"source":"print(1)","title":"demo"}\''],
     ['api-doc2', 'curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate -H "Content-Type: application/json" -d \'{"source":"print(40 + 2)","account_token":"LOGIN_TOKEN"}\''],
-    ['api-doc3', '-- run a hosted script in any executor:\nloadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()'],
-    ['api-doc4', 'curl -s -X POST https://lime.greedyhudzell.xyz/api/v2/obfuscate \\\n  -H "Authorization: Bearer $LIMEVM_API_KEY" \\\n  --data-binary @script.lua -o out.lua\n\n# unlimited, up to 1,000,000 chars, plain text in / plain text out\n# JSON also works: {"source":"print(1)"} -> {"ok":true,"output":"...","strings":1}']
+    ['api-doc3', '-- run a hosted script in any executor:\nloadstring(game:HttpGet("https://lime.purrguy.me/s/SLUG"))()'],
+    ['api-doc4', 'curl -s -X POST https://lime.purrguy.me/api/v2/obfuscate \\\n  -H "Authorization: Bearer $LIMEVM_API_KEY" \\\n  --data-binary @script.lua -o out.lua\n\n# unlimited, up to 1,000,000 chars, plain text in / plain text out\n# JSON also works: {"source":"print(1)"} -> {"ok":true,"output":"...","strings":1}']
   ];
   API_DOCS.forEach(function (pair) {
     var el = document.getElementById(pair[0]);
