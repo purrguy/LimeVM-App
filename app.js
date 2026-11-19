@@ -54,12 +54,23 @@ var FRIENDLY = {
 };
 
 window.addEventListener('load', function () {
+  // Keep the sticky tab bar directly under the header (it wraps on phones).
+  var navEl = document.querySelector('header.nav');
+  function syncNavHeight() {
+    var h = navEl ? navEl.getBoundingClientRect().height : 0;
+    document.documentElement.style.setProperty('--nav-h', Math.round(h) + 'px');
+  }
+  syncNavHeight();
+  window.addEventListener('resize', syncNavHeight);
+  window.addEventListener('orientationchange', syncNavHeight);
+
   // ---------- tab router (#/pricing, …) ----------
   var TABS = ['features', 'download', 'pricing', 'api', 'faq'];
   var API_DOCS = [
     ['api-doc1', 'TOKEN=$(curl -s -X POST https://purrguy.pythonanywhere.com/api/auth/login -H "Content-Type: application/json" -d \'{"username":"you","password":"secret"}\' | grep -o \'"token":"[^"]*"\' | cut -d\\" -f4)\n\ncurl -s -X POST https://purrguy.pythonanywhere.com/api/scripts -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d \'{"source":"print(1)","title":"demo"}\''],
     ['api-doc2', 'curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate -H "Content-Type: application/json" -d \'{"source":"print(40 + 2)","account_token":"LOGIN_TOKEN"}\''],
-    ['api-doc3', '-- run a hosted script in any executor:\nloadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()']
+    ['api-doc3', '-- run a hosted script in any executor:\nloadstring(game:HttpGet("https://lime.greedyhudzell.xyz/s/SLUG"))()'],
+    ['api-doc4', 'curl -s -X POST https://lime.greedyhudzell.xyz/api/v2/obfuscate \\\n  -H "Authorization: Bearer $LIMEVM_API_KEY" \\\n  --data-binary @script.lua -o out.lua\n\n# unlimited, up to 1,000,000 chars, plain text in / plain text out\n# JSON also works: {"source":"print(1)"} -> {"ok":true,"output":"...","strings":1}']
   ];
   API_DOCS.forEach(function (pair) {
     var el = document.getElementById(pair[0]);
@@ -125,6 +136,7 @@ window.addEventListener('load', function () {
       b.addEventListener('click', function () { setMode('login'); modal.hidden = false; authUser.focus(); });
       acctArea.appendChild(b);
     }
+    syncNavHeight();
   }
 
   function closeModal() { modal.hidden = true; authPass.value = ''; authErr.textContent = ''; }

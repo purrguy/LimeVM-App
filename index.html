@@ -94,17 +94,18 @@
 <section class="panel" data-panel="api" hidden>
   <p class="center"><span class="eyebrow">Developers</span></p>
   <h2>API</h2>
-  <p class="center dim">Automate uploads and dashboard obfuscation. Auth: <code>Authorization: Bearer &lt;session token&gt;</code> from login. Quotas reset midnight UTC. Full reference: <a href="/docs/api/">docs/api</a>.</p>
+  <p class="center dim">Automate uploads and obfuscation. Auth: <code>Authorization: Bearer &lt;session token&gt;</code> from login. Quotas reset midnight UTC. Full reference: <a href="/docs/api/">docs/api</a>.</p>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>upload.sh</span></div><pre id="api-doc1"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre id="api-doc2"></pre></div>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>fetch.lua</span></div><pre id="api-doc3"></pre></div>
-  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day.</p>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>private-api.sh</span></div><pre id="api-doc4"></pre></div>
+  <p class="note">Short links: free 3/day, 5-day expiry · paid 20/day, never expire · same script twice returns the existing link · <code>GET /s/&lt;slug&gt;</code> serves raw Lua · dashboard obfuscator: 300k chars, 2/day.<br><b>Private API</b> <code>POST /api/v2/obfuscate</code>: Bearer key, no daily quota, up to 1M chars, raw or JSON body.</p>
 </section>
 
 <section class="panel" data-panel="faq" hidden>
   <p class="center"><span class="eyebrow">FAQ</span></p>
   <h2>Sour questions</h2>
-  <details><summary>Will my script still run exactly the same?</summary><p>Yes. Every release passes 21 differential test cases (original vs obfuscated, byte-identical stdout) plus 140+ real-world scripts.</p></details>
+  <details><summary>Will my script still run exactly the same?</summary><p>Yes. Every release passes 28 differential test cases (original vs obfuscated, byte-identical stdout) plus 140+ real-world scripts.</p></details>
   <details><summary>Can anyone reverse it?</summary><p>Honest answer: a determined expert with dynamic analysis can eventually lift any client-side VM. LimeVM's job is making that cost weeks instead of minutes — fresh ISA per build, encrypted constants, tripwires.</p></details>
   <details><summary>How do accounts and activation work?</summary><p>Make a free account here or in the app (username + password, Discord linking supported). Buy a tier on Discord and staff activate you — your app and site both unlock. License files still work for offline-first setups.</p></details>
   <details><summary>Does it work offline?</summary><p>Yes. Licenses verify offline for 14 days between check-ins; obfuscation itself never needs the internet.</p></details>

@@ -43,8 +43,22 @@ curl -s -X DELETE https://purrguy.pythonanywhere.com/api/scripts/AB12CD -H "X-AP
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>obfuscate.sh</span></div><pre>curl -s -X POST https://purrguy.pythonanywhere.com/api/web-obfuscate \
   -H "Content-Type: application/json" \
   -d '{"source":"print(40 + 2)","account_token":"LOGIN_TOKEN"}'
-# → {"ok":true,"seed":123,"output":"-- limevm obfuscated…","left_today":1,…}</pre></div>
+# → {"ok":true,"seed":123,"output":"-- limevm v2 …","left_today":1,…}</pre></div>
   <p class="note">Dashboard obfuscator: 300k chars max, 2/day (+1 with both Work.ink steps done). Same endpoint powers the dashboard tab.</p>
+
+  <h2 class="gap">Private API (v2)</h2>
+  <div class="win"><div class="bar"><i></i><i></i><i></i><span>private.sh</span></div><pre>curl -s -X POST https://lime.greedyhudzell.xyz/api/v2/obfuscate \
+  -H "Authorization: Bearer $LIMEVM_API_KEY" \
+  --data-binary @script.lua -o out.lua
+
+# JSON body instead of raw text:
+curl -s -X POST https://lime.greedyhudzell.xyz/api/v2/obfuscate \
+  -H "Authorization: Bearer $LIMEVM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"source":"print(1)","seed":123,"raw":true}'
+# → {"ok":true,"seed":123,"output":"-- limevm v2 …","in_chars":8,
+#    "out_chars":…,"strings":1}</pre></div>
+  <p class="note">One fixed Bearer key, <b>no daily quota</b>, up to <b>1,000,000 chars</b> per call. A plain-text body returns plain text; add <code>?raw=1</code> (or <code>"raw":true</code>) for JSON requests. CORS is open. Every call is audited in a private Discord channel: string count, account, key with its last 5 characters masked, time and IP.</p>
 
   <h2 class="gap">History &amp; keys</h2>
   <div class="win"><div class="bar"><i></i><i></i><i></i><span>misc.sh</span></div><pre>curl -s https://purrguy.pythonanywhere.com/api/web-history -H "X-API-Key: lm_YOUR_KEY"
